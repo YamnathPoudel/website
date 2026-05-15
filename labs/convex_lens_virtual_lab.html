@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convex Lens — Virtual Lab | Yam Nath Poudel</title>
+<style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --ink: #050810;
+      --gold: #c8a84b;
+      --gold2: #e2c26d;
+      --white: #ffffff;
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --font-main: 'Outfit', sans-serif;
+      --font-serif: 'Cormorant Garamond', serif;
+      --bg: #fff;
+      --bg2: #f7f7f5;
+      --t1: #111;
+      --t2: #555;
+      --t3: #999;
+      --ti: #1464a8;
+      --bdr: rgba(0, 0, 0, .1);
+      --bdrm: rgba(0, 0, 0, .18);
+      --fn: 'Outfit', system-ui, -apple-system, sans-serif;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+    }
+
+    body {
+      font-family: var(--fn);
+      background: #f0f0ee;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ══ NAV (Unified) ══ */
+    #nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0 clamp(1rem, 3vw, 3rem);
+      transition: background .3s, border-color .3s;
+      background: #000;
+    }
+
+    #nav.scrolled {
+      background: rgba(10, 15, 30, .97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(200, 168, 75, .18);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold2);
+      white-space: nowrap;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 28px;
+      width: auto;
+      border-radius: 3.5px;
+      object-fit: contain;
+      border: 1.2px solid rgba(200, 168, 75, .3);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      gap: clamp(.5rem, 1.3vw, 1.4rem);
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, .58);
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      position: relative;
+      transition: color .2s;
+      text-decoration: none;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .nav-cta {
+      flex-shrink: 0;
+      display: inline-block;
+      background: transparent;
+      border: 1px solid rgba(200, 168, 75, .45);
+      color: var(--gold);
+      padding: 6px 16px;
+      border-radius: 3px;
+      font-size: .73rem;
+      font-weight: 600;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: all .2s;
+      text-decoration: none;
+    }
+
+    .nav-cta:hover {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    .hbtn {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 5px;
+      background: none;
+      border: none;
+    }
+
+    .hbtn span {
+      width: 22px;
+      height: 1.5px;
+      background: rgba(255, 255, 255, .8);
+      display: block;
+      transition: all .28s;
+    }
+
+    /* mobile menu */
+    #mob {
+      position: fixed;
+      inset: 0;
+      background: var(--ink);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.8rem;
+      transform: translateX(100%);
+      transition: transform .42s var(--ease);
+    }
+
+    #mob.open {
+      transform: translateX(0);
+    }
+
+    #mob a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, .7);
+      transition: color .2s;
+      text-decoration: none;
+    }
+
+    @media (max-width: 900px) {
+      .nav-links, .nav-cta { display: none; }
+      .hbtn { display: flex; margin-left: auto; }
+    }
+
+    .outer {
+      width: 100%;
+      max-width: 1100px;
+      margin-top: 80px;
+      padding: 0 12px;
+    }
+
+    .lw {
+      background: #fff;
+      border: 1px solid var(--bdr);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 24px rgba(0, 0, 0, .06)
+    }
+
+    .lh {
+      padding: 16px 24px 12px;
+      border-bottom: 1px solid var(--bdr);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px
+    }
+
+    .lt {
+      font-size: 22px;
+      font-weight: 800;
+      color: #111;
+      letter-spacing: -.5px
+    }
+
+    .ls {
+      font-size: 13px;
+      color: #555;
+      margin-top: 3px
+    }
+
+    .badge {
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 20px;
+      background: #e3f2fd;
+      color: #1e88e5
+    }
+
+    .lb {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      border-bottom: 1px solid var(--bdr)
+    }
+
+    .cc {
+      border-right: 1px solid var(--bdr);
+      background: #f7f7f5;
+      display: flex;
+      flex-direction: column;
+      position: relative
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      background: #fff;
+      cursor: crosshair;
+      touch-action: none
+    }
+
+    .hint {
+      font-size: 11px;
+      color: #999;
+      text-align: center;
+      padding: 6px;
+      border-top: 1px solid var(--bdr)
+    }
+
+    .rc {
+      display: flex;
+      flex-direction: column;
+      background: #fff
+    }
+
+    .cg {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--bdr);
+      flex: 1
+    }
+
+    .cg:last-child {
+      border-bottom: none
+    }
+
+    .cl {
+      font-size: 11px;
+      font-weight: 800;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px
+    }
+
+    .cv2 {
+      font-size: 26px;
+      font-weight: 900;
+      color: #111;
+      margin-bottom: 8px;
+      letter-spacing: -1px;
+      line-height: 1
+    }
+
+    .cu {
+      font-size: 12px;
+      font-weight: 500;
+      color: #555
+    }
+
+    input[type=range] {
+      width: 100%;
+      height: 4px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: rgba(0, 0, 0, .18);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #111;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 1.5px rgba(0, 0, 0, .18);
+      transition: transform .15s;
+      cursor: pointer
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.25)
+    }
+
+    .ig {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--bdr);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px
+    }
+
+    .ic {
+      background: #f7f7f5;
+      border-radius: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--bdr)
+    }
+
+    .icl {
+      font-size: 10px;
+      font-weight: 800;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-bottom: 4px
+    }
+
+    .icv {
+      font-size: 18px;
+      font-weight: 900;
+      color: #111
+    }
+
+    .iceq {
+      font-size: 12px;
+      font-weight: 600;
+      color: #555;
+      margin-top: 4px;
+      line-height: 1.5
+    }
+
+    .tb {
+      padding: 20px 24px;
+      background: #fff;
+      border-top: 1px solid var(--bdr)
+    }
+
+    .tb h3 {
+      font-size: 13px;
+      font-weight: 800;
+      color: #111;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-bottom: 12px
+    }
+
+    .tg {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px
+    }
+
+    .tsec h4 {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1464a8;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .tsec h4::before {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 12px;
+      background: #1a73e8;
+      border-radius: 2px
+    }
+
+    .tl {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px
+    }
+
+    .tl li {
+      font-size: 13px;
+      color: #555;
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.5
+    }
+
+    .tl li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: #1a73e8;
+      font-weight: 900
+    }
+
+    .fc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px
+    }
+
+    .fc span {
+      background: #f0f4ff;
+      border: 1px solid #d0dcf8;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a3a8f;
+      font-family: monospace
+    }
+
+    .characteristics {
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--bdr);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      background: #f7f7f5;
+    }
+
+    .char-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: #999;
+      text-transform: uppercase;
+      margin-right: 4px;
+    }
+
+    .char-chip {
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+    }
+
+    .chip-real {
+      background: #e0f2f1;
+      color: #00695c;
+    }
+
+    .chip-virtual {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
+
+    .chip-inverted {
+      background: #fff3e0;
+      color: #ef6c00;
+    }
+
+    .chip-upright {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .chip-enlarged {
+      background: #fffde7;
+      color: #f57f17;
+    }
+
+    .chip-diminished {
+      background: #ede7f6;
+      color: #512da8;
+    }
+
+    .chip-special {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+
+    /* ══ FOOTER ══ */
+    footer {
+      background: #050810;
+      padding: clamp(1.5rem, 3vw, 2.4rem) clamp(1.2rem, 5vw, 5rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.1rem;
+      border-top: 1px solid rgba(200, 168, 75, .1);
+      width: 100%;
+      margin-top: 48px;
+    }
+
+    .fbrand {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--gold2);
+      text-decoration: none;
+    }
+
+    .fbrand img {
+      height: 28px;
+      width: auto;
+      border-radius: 3.5px;
+      object-fit: contain;
+      border: 1px solid rgba(200, 168, 75, .25)
+    }
+
+    .fbrand small {
+      display: block;
+      font-family: 'Outfit', sans-serif;
+      font-size: .62rem;
+      color: rgba(255, 255, 255, .24);
+      font-weight: 400;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-top: .1rem
+    }
+
+    .fnav {
+      display: flex;
+      gap: 1.3rem;
+      flex-wrap: wrap
+    }
+
+    .fnav a {
+      font-size: .7rem;
+      color: rgba(255, 255, 255, .24);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      transition: color .18s;
+      text-decoration: none;
+    }
+
+    .fnav a:hover {
+      color: var(--gold)
+    }
+
+    .fcopy {
+      font-size: .66rem;
+      color: rgba(255, 255, 255, .17)
+    }
+
+    @media(max-width:680px) {
+      .lb { grid-template-columns: 1fr }
+      .cc { border-right: none; border-bottom: 1px solid var(--bdr) }
+      .ig { grid-template-columns: 1fr 1fr }
+      .tg { grid-template-columns: 1fr }
+      footer { flex-direction: column; align-items: flex-start }
+      .fnav { gap: .8rem }
+    }
+.outer{width:100%;max-width:1100px;}
+.lw{background:#fff;border:1px solid var(--bdr);border-radius:16px;overflow:hidden;box-shadow:0 2px 24px rgba(0,0,0,.06)}
+.lh{padding:16px 24px 12px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.lt{font-size:22px;font-weight:800;color:#111;letter-spacing:-.5px}
+.ls{font-size:13px;color:#555;margin-top:3px}
+.badge{font-size:13px;font-weight:700;padding:6px 16px;border-radius:20px;background:#e3f2fd;color:#1e88e5}
+.lb{display:grid;grid-template-columns:1fr 300px;border-bottom:1px solid var(--bdr)}
+.cc{border-right:1px solid var(--bdr);background:#f7f7f5;display:flex;flex-direction:column;position:relative}
+canvas{display:block;width:100%;background:#fff;cursor:crosshair;touch-action:none}
+.hint{font-size:11px;color:#999;text-align:center;padding:6px;border-top:1px solid var(--bdr)}
+.rc{display:flex;flex-direction:column;background:#fff}
+.cg{padding:14px 20px;border-bottom:1px solid var(--bdr);flex:1}
+.cg:last-child{border-bottom:none}
+.cl{font-size:11px;font-weight:800;color:#999;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.val-label {
+  font-size: 26px;
+  font-weight: 900;
+  color: #111;
+  letter-spacing: -1px;
+}
+.cu {
+  font-size: 12px;
+  font-weight: 500;
+  color: #555;
+  margin-left: 4px;
+}
+.chip-pos {
+  background: #fdf2f2;
+  color: #9b1c1c;
+}
+.btn-inf {
+  width: 32px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0ee;
+  color: #111;
+  border: 1px solid var(--bdr);
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+  line-height: 1;
+}
+.btn-inf:hover { background: #fff; border-color: #111; }
+.btn-inf.active { background: #1464a8; color: #fff; border-color: #1464a8; }
+@media(max-width:680px){.lb{grid-template-columns:1fr}.cc{border-right:none;border-bottom:1px solid var(--bdr)}.ig{grid-template-columns:1fr 1fr}.tg{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+  <!-- Mobile overlay -->
+  <div id="mob">
+    <a href="../index.html#home" onclick="closeMob()">Home</a>
+    <a href="../resources.html" onclick="closeMob()">Resources</a>
+    <a href="../links.html" onclick="closeMob()">Links</a>
+    <a href="../tools.html" onclick="closeMob()">Tools</a>
+    <a href="../labs.html" onclick="closeMob()">Virtual Labs</a>
+    <a href="../contact.html" onclick="closeMob()">Contact</a>
+  </div>
+
+  <!-- ══ NAV ══ -->
+  <nav id="nav">
+    <a class="nav-logo" href="../index.html#home">
+      <img src="../images/logo.svg" alt="YNP Logo" loading="lazy" />
+      Yamnath Poudel
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#home">Home</a></li>
+      <li><a href="../resources.html">Resources</a></li>
+      <li><a href="../links.html">Links</a></li>
+      <li><a href="../tools.html">Tools</a></li>
+      <li><a href="../labs.html" style="color:var(--gold)">Virtual Labs</a></li>
+    </ul>
+    <a href="../contact.html" class="nav-cta">Contact</a>
+    <button class="hbtn" id="hbtn" onclick="toggleMob()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+<div class="outer">
+  <div class="lw">
+    <div class="lh">
+      <div>
+        <div class="lt">Convex Lens Ray Diagram</div>
+        <div class="ls">Principal Focus · Object Distance · Real vs Virtual Images</div>
+      </div>
+      <div class="badge" id="caseBadge">Real, Inverted Image</div>
+    </div>
+    <div class="lb">
+      <div class="cc">
+        <canvas id="lensCanvas" height="380"></canvas>
+        <div class="hint">&#9654; Drag the object (arrow) or use sliders to adjust focal length and distance</div>
+      </div>
+      <div class="rc">
+        <div class="cg">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <div class="cl" style="margin-bottom:0">Object Distance (u)</div>
+            <button class="btn-inf" id="btnInf" title="Set to Infinity">&infin;</button>
+          </div>
+          <div style="display:flex;align-items:baseline">
+            <span id="uLabel" class="val-label">250</span>
+            <span class="cu">px</span>
+          </div>
+          <input type="range" id="uSlider" min="30" max="1500" value="250" step="1">
+        </div>
+        <div class="cg">
+          <div class="cl">Focal Length (f)</div>
+          <div style="display:flex;align-items:baseline">
+            <span id="fLabel" class="val-label">120</span>
+            <span class="cu">px</span>
+          </div>
+          <input type="range" id="fSlider" min="40" max="400" value="120" step="1">
+        </div>
+        <div class="cg">
+          <div class="cl">Object Height (hₒ)</div>
+          <div style="display:flex;align-items:baseline">
+            <span id="hoLabel" class="val-label">60</span>
+            <span class="cu">px</span>
+          </div>
+          <input type="range" id="hoSlider" min="10" max="150" value="60" step="1">
+        </div>
+        <div class="cg">
+          <div class="cl">Magnification (m)</div>
+          <div class="val-label" id="magVal" style="font-size:20px">—</div>
+        </div>
+      </div>
+    </div>
+    <div class="characteristics">
+      <span class="char-label">Summary:</span>
+      <span class="char-chip" id="realChip">Real</span>
+      <span class="char-chip" id="orientChip">Inverted</span>
+      <span class="char-chip" id="sizeChip">Enlarged</span>
+      <span class="char-chip" id="objPosChip">dₒ > 2f</span>
+      <span class="char-chip chip-pos" id="imgPosChip">f < v < 2f</span>
+    </div>
+    <div class="ig">
+      <div class="ic"><div class="icl">Image Nature</div><div class="icv" id="imgTypeCard">Real</div></div>
+      <div class="ic"><div class="icl">Image Position (v)</div><div class="icv" id="diCard">—</div></div>
+      <div class="ic"><div class="icl">Image Height (hᵢ)</div><div class="icv" id="hiCard">—</div></div>
+      <div class="ic">
+        <div class="icl">Lens Formula</div>
+        <div class="iceq">1/f = 1/v + 1/u<br>m = -v/u</div>
+      </div>
+    </div>
+    <div class="tb">
+      <h3>Key Concepts &amp; Formulas</h3>
+      <div class="tg">
+        <div class="tsec">
+          <h4>Ray Diagram Rules</h4>
+          <ul class="tl">
+            <li>Ray parallel to axis passes through focus.</li>
+            <li>Ray through optical center passes undeviated.</li>
+            <li>Ray through focus becomes parallel to axis.</li>
+            <li>Dashed lines represent virtual extensions.</li>
+          </ul>
+        </div>
+        <div>
+          <div class="tsec">
+            <h4>Essential Formulas</h4>
+            <div class="fc">
+              <span>1/f = 1/v + 1/u</span>
+              <span>m = hᵢ / hₒ</span>
+              <span>P = 1/f (m)</span>
+            </div>
+          </div>
+          <div class="tsec" style="margin-top:12px">
+            <h4>Variable Meanings</h4>
+            <ul class="tl">
+              <li><strong>u</strong> = Object distance &nbsp; <strong>v</strong> = Image distance</li>
+              <li><strong>f</strong> = Focal length &nbsp; <strong>m</strong> = Magnification</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <a href="../index.html#home" class="fbrand">
+      <img src="../images/logo.svg" alt="YNP Logo" />
+      <div>Yamnath Poudel<small>Science Educator · Author · Nepal</small></div>
+    </a>
+    <nav class="fnav">
+      <a href="../index.html#home">Home</a>
+      <a href="../resources.html">Resources</a>
+      <a href="../links.html">Links</a>
+      <a href="../tools.html">Tools</a>
+      <a href="../labs.html" style="color:var(--gold)">Virtual Labs</a>
+      <a href="../contact.html">Contact</a>
+    </nav>
+    <div class="fcopy">© 2026 Keshav Poudel. All rights reserved.</div>
+  </footer>
+
+  <script>
+    /* mobile menu */
+    let mo = false;
+    function toggleMob() {
+      mo = !mo;
+      document.getElementById('mob').classList.toggle('open', mo);
+      document.getElementById('hbtn').classList.toggle('open', mo);
+      document.body.style.overflow = mo ? 'hidden' : '';
+    }
+    function closeMob() { if (mo) toggleMob(); }
+
+    /* Nav scroll effect */
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('nav');
+      if (window.scrollY > 50) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    });
+
+    const canvas = document.getElementById('lensCanvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, CX, CY, dPixelRatio = window.devicePixelRatio || 1;
+    let u = 250, f = 120, h = 60, isInfinity = false;
+
+    function getColors() {
+      return {
+        axis: 'rgba(5, 8, 16, 0.55)',
+        grid: 'rgba(0, 0, 0, 0.04)',
+        lens: '#1464a8',
+        lensFill: 'rgba(20, 100, 168, 0.08)',
+        obj: '#16a34a',
+        ray1: '#f43f5e',
+        ray2: '#8b5cf6',
+        ray3: '#3b82f6',
+        img: '#ef4444',
+        imgVirt: '#8b5cf6',
+        focus: '#1464a8',
+        text: '#555'
+      };
+    }
+
+    function resize() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      W = rect.width; H = 400;
+      canvas.width = W * dPixelRatio;
+      canvas.height = H * dPixelRatio;
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.scale(dPixelRatio, dPixelRatio);
+      CX = W / 2; CY = H / 2;
+    }
+
+    function drawArrow(x, y1, y2, color, lbl, isVirtual = false) {
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 3;
+      if (isVirtual) ctx.setLineDash([5, 5]);
+      ctx.beginPath(); ctx.moveTo(x, y1); ctx.lineTo(x, y2); ctx.stroke();
+      
+      const headSize = 10;
+      const dir = y2 < y1 ? -1 : 1;
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.moveTo(x - 6, y2 - headSize * dir);
+      ctx.lineTo(x, y2);
+      ctx.lineTo(x + 6, y2 - headSize * dir);
+      ctx.stroke();
+
+      if (lbl) {
+        ctx.font = 'bold 11px system-ui';
+        ctx.fillStyle = color;
+        ctx.textAlign = 'center';
+        ctx.fillText(lbl, x, Math.max(y1, y2) + 18);
+      }
+      ctx.restore();
+    }
+
+    function drawArrowOnLine(x1, y1, x2, y2, color) {
+      const mx = (x1 + x2) / 2;
+      const my = (y1 + y2) / 2;
+      const angle = Math.atan2(y2 - y1, x2 - x1);
+      const size = 8;
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(mx - size * Math.cos(angle - 0.5), my - size * Math.sin(angle - 0.5));
+      ctx.lineTo(mx, my);
+      ctx.lineTo(mx - size * Math.cos(angle + 0.5), my - size * Math.sin(angle + 0.5));
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function l() {
+      ctx.clearRect(0, 0, W, H);
+      const C = getColors();
+
+      // Grid
+      ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+      for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+      for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+      // Principal Axis
+      ctx.strokeStyle = C.axis; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(0, CY); ctx.lineTo(W, CY); ctx.stroke();
+
+      // Markers
+      ctx.fillStyle = C.text; ctx.font = 'bold 12px system-ui'; ctx.textAlign = 'center';
+      const points = [
+        { x: CX - f, l: 'F' }, { x: CX - 2 * f, l: '2F' },
+        { x: CX + f, l: 'F\'' }, { x: CX + 2 * f, l: '2F\'' }
+      ];
+      points.forEach(p => {
+        ctx.beginPath(); ctx.arc(p.x, CY, 3, 0, Math.PI * 2); ctx.fill();
+        ctx.fillText(p.l, p.x, CY + 20);
+      });
+
+      // Lens
+      ctx.fillStyle = C.lensFill; ctx.strokeStyle = C.lens; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.ellipse(CX, CY, 25, 140, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+      // Calculations
+      let v = (f * u) / (u - f);
+      let m = v / u;
+      let hi = m * h;
+      let ox = CX - u, oy = CY - h;
+
+      if (isInfinity) {
+        // Parallel rays from infinity
+        ctx.strokeStyle = C.ray1; ctx.lineWidth = 1.5;
+        // Top Ray
+        ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(CX, oy); ctx.lineTo(CX + f, CY); ctx.lineTo(W, CY + (CY-oy)*(W-(CX+f))/f); ctx.stroke();
+        drawArrowOnLine(CX/2, oy, CX, oy, C.ray1);
+        drawArrowOnLine(CX, oy, CX + f, CY, C.ray1);
+        // Bottom Ray
+        ctx.beginPath(); ctx.moveTo(0, CY + h); ctx.lineTo(CX, CY + h); ctx.lineTo(CX + f, CY); ctx.lineTo(W, CY + (CY-(CY+h))*(W-(CX+f))/f); ctx.stroke();
+        drawArrowOnLine(CX/2, CY + h, CX, CY + h, C.ray1);
+        drawArrowOnLine(CX, CY + h, CX + f, CY, C.ray1);
+        
+        ctx.fillStyle = C.img;
+        ctx.beginPath(); ctx.arc(CX + f, CY, 4, 0, Math.PI*2); ctx.fill();
+        ctx.font = 'bold 11px system-ui';
+        ctx.fillText('Point Image at Focus', CX + f, CY + 18);
+        updateUI(f, 0);
+        requestAnimationFrame(l);
+        return;
+      }
+
+      // Object
+      drawArrow(ox, CY, oy, C.obj, 'Object');
+
+      if (u === f) {
+        // Infinity case
+        ctx.strokeStyle = C.ray1; ctx.lineWidth = 1.5;
+        // Ray 1
+        ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(CX, oy); ctx.lineTo(W, CY + (CY-oy)/f * (W-CX)); ctx.stroke();
+        drawArrowOnLine(ox, oy, CX, oy, C.ray1);
+        // Ray 2
+        ctx.strokeStyle = C.ray2;
+        ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(W, CY + (CY-oy)/(CX-ox) * (W-ox)); ctx.stroke();
+        drawArrowOnLine(ox, oy, CX, CY, C.ray2);
+        updateUI(Infinity, Infinity);
+      } else {
+        const ix = CX + v, iy = CY + hi;
+        const isReal = u > f;
+
+        // --- RAY 1: Parallel -> Lens -> Focus ---
+        ctx.strokeStyle = C.ray1; ctx.lineWidth = 1.5;
+        // Segment 1: Object to Lens (always solid)
+        ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(CX, oy); ctx.stroke();
+        drawArrowOnLine(ox, oy, CX, oy, C.ray1);
+
+        if (isReal) {
+          // Segment 2: Lens to Image point (and slightly beyond)
+          const extX = Math.max(W, ix + 50);
+          const extY = oy + (CY - oy) / f * (extX - CX);
+          ctx.beginPath(); ctx.moveTo(CX, oy); ctx.lineTo(extX, extY); ctx.stroke();
+          drawArrowOnLine(CX, oy, ix, iy, C.ray1);
+        } else {
+          // Refracted ray moving RIGHT (solid)
+          const extX = W;
+          const extY = oy + (CY - oy) / f * (extX - CX);
+          ctx.beginPath(); ctx.moveTo(CX, oy); ctx.lineTo(extX, extY); ctx.stroke();
+          drawArrowOnLine(CX, oy, CX + 100, oy + (CY-oy)/f * 100, C.ray1);
+          // Extension moving LEFT (dashed)
+          ctx.save(); ctx.setLineDash([5, 5]);
+          ctx.beginPath(); ctx.moveTo(CX, oy); ctx.lineTo(ix, iy); ctx.stroke();
+          ctx.restore();
+        }
+
+        // --- RAY 2: Through Optical Center ---
+        ctx.strokeStyle = C.ray2;
+        if (isReal) {
+          const extX = Math.max(W, ix + 50);
+          const extY = CY + (CY - oy) / (CX - ox) * (extX - CX);
+          ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(extX, extY); ctx.stroke();
+          drawArrowOnLine(ox, oy, CX, CY, C.ray2);
+          drawArrowOnLine(CX, CY, ix, iy, C.ray2);
+        } else {
+          // Ray moving object -> lens -> infinity (solid)
+          const extX = W;
+          const extY = CY + (CY - oy) / (CX - ox) * (extX - CX);
+          ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(extX, extY); ctx.stroke();
+          drawArrowOnLine(ox, oy, CX, CY, C.ray2);
+          drawArrowOnLine(CX, CY, CX + 100, CY + (CY-oy) / (CX-ox) * 100, C.ray2);
+          // Extension moving back to image (dashed)
+          ctx.save(); ctx.setLineDash([5, 5]);
+          ctx.beginPath(); ctx.moveTo(CX, CY); ctx.lineTo(ix, iy); ctx.stroke();
+          ctx.restore();
+        }
+
+        // Image
+        if (isFinite(ix)) {
+          drawArrow(ix, CY, iy, isReal ? C.img : C.imgVirt, isReal ? 'Real Image' : 'Virtual Image', !isReal);
+        }
+
+        updateUI(v, hi);
+      }
+
+      requestAnimationFrame(l);
+    }
+
+    function updateUI(v, hi) {
+      const isInf = !isFinite(v);
+      const M = (isInf || hi === 0) ? (hi === 0 ? 0 : Infinity) : -(v / u);
+      const isReal = v > 0 && !isInf;
+
+      document.getElementById('uLabel').textContent = isInfinity ? '∞' : Math.round(u);
+      document.getElementById('uSlider').value = u;
+      document.getElementById('fLabel').textContent = Math.round(f);
+      document.getElementById('fSlider').value = Math.round(f);
+      document.getElementById('hoLabel').textContent = Math.round(h);
+      document.getElementById('hoSlider').value = Math.round(h);
+
+      document.getElementById('diCard').textContent = isInf ? '∞' : Math.abs(Math.round(v)) + ' px';
+      document.getElementById('hiCard').textContent = isInf ? '∞' : Math.abs(Math.round(hi)) + ' px';
+      document.getElementById('magVal').textContent = isInf ? '∞' : Math.abs(M).toFixed(2);
+      document.getElementById('imgTypeCard').textContent = isInf ? 'At Infinity' : (hi === 0 ? 'Point Image' : (isReal ? 'Real' : 'Virtual'));
+
+      const realChip = document.getElementById('realChip');
+      realChip.textContent = isInf ? 'None' : (isReal ? 'Real' : 'Virtual');
+      realChip.className = 'char-chip ' + (isInf ? 'chip-special' : (isReal ? 'chip-real' : 'chip-virtual'));
+
+      const orientChip = document.getElementById('orientChip');
+      orientChip.textContent = isInf ? 'None' : (isReal ? 'Inverted' : 'Upright');
+      orientChip.className = 'char-chip ' + (isInf ? 'chip-special' : (isReal ? 'chip-inverted' : 'chip-upright'));
+
+      const am = Math.abs(M);
+      const sizeChip = document.getElementById('sizeChip');
+      sizeChip.textContent = isInf ? 'Infinite' : (hi === 0 ? 'Point' : (am > 1.05 ? 'Enlarged' : (am < 0.95 ? 'Diminished' : 'Same')));
+      sizeChip.className = 'char-chip ' + (isInf ? 'chip-special' : (am > 1.05 ? 'chip-enlarged' : (am < 0.95 ? 'chip-diminished' : 'chip-special')));
+
+      const objPosChip = document.getElementById('objPosChip');
+      if (isInfinity) objPosChip.textContent = 'At Infinity';
+      else if (u > 2 * f + 5) objPosChip.textContent = 'Beyond 2F';
+      else if (u >= 2 * f - 5) objPosChip.textContent = 'At 2F';
+      else if (u > f + 5) objPosChip.textContent = 'Between F and 2F';
+      else if (u >= f - 5) objPosChip.textContent = 'At F';
+      else objPosChip.textContent = 'Inside F';
+
+      const imgPosChip = document.getElementById('imgPosChip');
+      if (isInfinity || u > 1400) imgPosChip.textContent = 'At F\'';
+      else if (isInf) imgPosChip.textContent = 'At Infinity';
+      else if (isReal) {
+        if (v > 2*f + 5) imgPosChip.textContent = 'Beyond 2F\'';
+        else if (v >= 2*f - 5) imgPosChip.textContent = 'At 2F\'';
+        else imgPosChip.textContent = 'Between F\' and 2F\'';
+      } else {
+        imgPosChip.textContent = 'Same side (Virtual)';
+      }
+
+      let caseStr;
+      if (isInfinity) caseStr = 'Parallel Rays -> Focus';
+      else if (isInf) caseStr = 'Object at F';
+      else if (u > 2 * f + 5) caseStr = 'Object beyond 2F';
+      else if (u >= 2 * f - 5) caseStr = 'Object at 2F';
+      else if (u > f + 5) caseStr = 'Object between F and 2F';
+      else if (u >= f - 5) caseStr = 'Object at F';
+      else caseStr = 'Object inside F';
+      document.getElementById('caseBadge').textContent = caseStr;
+    }
+
+    document.getElementById('uSlider').oninput = e => { u = +e.target.value; isInfinity = false; document.getElementById('btnInf').classList.remove('active'); };
+    document.getElementById('fSlider').oninput = e => { f = +e.target.value; };
+    document.getElementById('hoSlider').oninput = e => { h = +e.target.value; };
+
+    document.getElementById('btnInf').onclick = () => {
+      isInfinity = !isInfinity;
+      document.getElementById('btnInf').classList.toggle('active', isInfinity);
+    };
+
+    window.addEventListener('resize', () => { resize(); });
+    resize();
+    requestAnimationFrame(l);
+
+  </script>
+</body>
+
+</html>

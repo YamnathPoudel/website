@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Contact Yamnath Poudel - Science Educator, Author, and AI Advocate in Nepal. Get in touch for training, resources, or collaborations." />
+  <title>Contact — Yamnath Poudel</title>
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Outfit:wght@100..900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --ink: #050810;
+      --navy: #0d1b3e;
+      --navy2: #122050;
+      --gold: #c8a84b;
+      --gold2: #e2c26d;
+      --white: #ffffff;
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --card-bg: rgba(255, 255, 255, 0.02);
+      --font-main: 'Outfit', sans-serif;
+      --font-serif: 'Cormorant Garamond', serif;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 110%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--ink);
+      color: var(--white);
+      font-family: var(--font-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ══ BACKGROUND ══ */
+    .bg-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% -20%, #1a233a 0%, transparent 60%);
+      z-index: -1;
+      opacity: 0.6;
+    }
+
+    /* ══ NAV (Unified) ══ */
+    #nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0 clamp(1rem, 3vw, 3rem);
+      transition: background .3s, border-color .3s;
+      background: #000;
+    }
+
+    #nav.scrolled {
+      background: rgba(10, 15, 30, .97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(200, 168, 75, .18);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold2);
+      white-space: nowrap;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 28px;
+      width: auto;
+      border-radius: 3.5px;
+      object-fit: contain;
+      border: 1.2px solid rgba(200, 168, 75, .3);
+    }
+
+    .nav-logo em {
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(255, 255, 255, .6);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      gap: clamp(.5rem, 1.3vw, 1.4rem);
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, .58);
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      position: relative;
+      transition: color .2s;
+      text-decoration: none;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--gold);
+      transition: width .25s var(--ease);
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      flex-shrink: 0;
+      display: inline-block;
+      background: transparent;
+      border: 1px solid rgba(200, 168, 75, .45);
+      color: var(--gold);
+      padding: 6px 16px;
+      border-radius: 3px;
+      font-size: .73rem;
+      font-weight: 600;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: all .2s;
+      text-decoration: none;
+    }
+
+    .nav-cta:hover {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    /* hamburger */
+    .hbtn {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 5px;
+      background: none;
+      border: none;
+      flex-shrink: 0;
+    }
+
+    .hbtn span {
+      width: 22px;
+      height: 1.5px;
+      background: rgba(255, 255, 255, .8);
+      display: block;
+      transition: all .28s;
+    }
+
+    .hbtn.open span:nth-child(1) {
+      transform: rotate(45deg) translate(4px, 5px);
+    }
+
+    .hbtn.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hbtn.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(4px, -5px);
+    }
+
+    /* mobile menu */
+    #mob {
+      position: fixed;
+      inset: 0;
+      background: var(--ink);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.8rem;
+      transform: translateX(100%);
+      transition: transform .42s var(--ease);
+    }
+
+    #mob.open {
+      transform: translateX(0);
+    }
+
+    #mob a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, .7);
+      transition: color .2s;
+      text-decoration: none;
+    }
+
+    #mob a:hover {
+      color: var(--gold);
+    }
+
+    @media (max-width: 900px) {
+
+      .nav-links,
+      .nav-cta {
+        display: none;
+      }
+
+      .hbtn {
+        display: flex;
+        margin-left: auto;
+      }
+    }
+
+    /* ══ HERO ══ */
+    header {
+      padding: 1.5rem 5% 1.5rem;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 5.5vw, 4.2rem);
+      margin-bottom: 0.3rem;
+      background: linear-gradient(to right, #fff, var(--gold2), #fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .lead {
+      color: rgba(255, 255, 255, 0.5);
+      max-width: 600px;
+      margin: 0 auto 0.8rem;
+    }
+
+    /* ══ CONTACT ══ */
+    #contact {
+      padding: clamp(3rem, 6vw, 5.5rem) clamp(1.2rem, 5vw, 5rem);
+      position: relative;
+      overflow: hidden
+    }
+
+    #contact::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      left: -200px;
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, rgba(200, 168, 75, .05) 0%, transparent 65%);
+      pointer-events: none
+    }
+
+    .cgrid {
+      max-width: 650px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .kicker {
+      font-size: .68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--gold);
+      margin-bottom: .8rem
+    }
+
+    .sh {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 600;
+      line-height: .9;
+      margin-bottom: 1.8rem
+    }
+
+    .sh em {
+      font-style: italic;
+      color: var(--gold2);
+      font-weight: 400
+    }
+
+    .ccards {
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+      margin-top: 1.5rem
+    }
+
+    .ccard {
+      display: flex;
+      align-items: center;
+      gap: .95rem;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .07);
+      border-radius: 8px;
+      padding: .95rem 1.2rem;
+      transition: all .22s;
+      text-decoration: none;
+    }
+
+    .ccard:hover {
+      border-color: rgba(200, 168, 75, .26);
+      background: rgba(200, 168, 75, .05);
+      transform: translateX(4px)
+    }
+
+    .cico {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      border-radius: 7px;
+      background: rgba(200, 168, 75, .1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem
+    }
+
+    .ctxt h4 {
+      font-size: .62rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: .16rem
+    }
+
+    .ctxt a,
+    .ctxt p {
+      font-size: .84rem;
+      color: rgba(255, 255, 255, .6);
+      transition: color .18s;
+      text-decoration: none;
+    }
+
+    .socs {
+      display: flex;
+      gap: .6rem;
+      margin-top: 1.4rem;
+      flex-wrap: wrap
+    }
+
+    .soc {
+      width: 36px;
+      height: 36px;
+      border-radius: 7px;
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .09);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, .4);
+      font-size: .78rem;
+      font-weight: 700;
+      transition: all .2s;
+      text-decoration: none;
+    }
+
+    .soc:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--ink)
+    }
+
+    .cright {
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid rgba(255, 255, 255, .07);
+      border-radius: 10px;
+      padding: 1.9rem
+    }
+
+    .cright h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      color: var(--gold2);
+      margin-bottom: .75rem
+    }
+
+    .cright p {
+      font-size: .81rem;
+      color: rgba(255, 255, 255, .36);
+      line-height: 1.8;
+      margin-bottom: 1.2rem
+    }
+
+    .qlg {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .5rem
+    }
+
+    .ql {
+      display: flex;
+      align-items: center;
+      gap: .42rem;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .07);
+      border-radius: 6px;
+      padding: .68rem .9rem;
+      color: rgba(255, 255, 255, .46);
+      font-size: .76rem;
+      transition: all .18s;
+      text-decoration: none;
+    }
+
+    .ql:hover {
+      background: rgba(200, 168, 75, .08);
+      border-color: rgba(200, 168, 75, .2);
+      color: var(--gold2)
+    }
+
+    @media (max-width: 768px) {
+      .cgrid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ══ FOOTER ══ */
+    footer {
+      background: #050810;
+      padding: clamp(1.5rem, 3vw, 2.4rem) clamp(1.2rem, 5vw, 5rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.1rem;
+      border-top: 1px solid rgba(200, 168, 75, .1);
+      margin-top: 4rem;
+    }
+
+    .fbrand {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--gold2);
+      text-decoration: none;
+    }
+
+    .fbrand img {
+      height: 28px;
+      width: auto;
+      border-radius: 3.5px;
+      object-fit: contain;
+      border: 1px solid rgba(200, 168, 75, .25);
+    }
+
+    .fbrand small {
+      display: block;
+      font-family: 'Outfit', sans-serif;
+      font-size: .62rem;
+      color: rgba(255, 255, 255, .24);
+      font-weight: 400;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-top: .1rem
+    }
+
+    .fnav {
+      display: flex;
+      gap: 1.3rem;
+      flex-wrap: wrap
+    }
+
+    .fnav a {
+      font-size: .7rem;
+      color: rgba(255, 255, 255, .24);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      transition: color .18s;
+      text-decoration: none;
+    }
+
+    .fnav a:hover {
+      color: var(--gold)
+    }
+
+    .fcopy {
+      font-size: .66rem;
+      color: rgba(255, 255, 255, .17)
+    }
+
+    @media(max-width:500px) {
+      footer {
+        flex-direction: column;
+        align-items: flex-start
+      }
+
+      .fnav {
+        gap: .8rem
+      }
+    }
+
+    /* ══ ANIMATIONS ══ */
+    .rv {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: 0.8s;
+    }
+
+    .rv.vis {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-glow"></div>
+
+  <!-- Mobile overlay -->
+  <div id="mob">
+    <a href="index.html#home" onclick="closeMob()">Home</a>
+    <a href="resources.html" onclick="closeMob()">Resources</a>
+    <a href="links.html" onclick="closeMob()">Links</a>
+    <a href="tools.html" onclick="closeMob()">Tools</a>
+    <a href="labs.html" onclick="closeMob()">Virtual Labs</a>
+    <a href="contact.html" onclick="closeMob()" style="color:var(--gold)">Contact</a>
+  </div>
+
+  <!-- ══ NAV ══ -->
+  <nav id="nav">
+    <a class="nav-logo" href="index.html#home">
+      <img src="images/logo.svg" alt="YNP Logo" loading="lazy" />
+      Yamnath Poudel<em></em>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#home">Home</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="links.html">Links</a></li>
+      <li><a href="tools.html">Tools</a></li>
+      <li><a href="labs.html">Virtual Labs</a></li>
+    </ul>
+    <a href="contact.html" class="nav-cta">Contact</a>
+    <button class="hbtn" id="hbtn" onclick="toggleMob()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div style="height: 60px;"></div>
+
+  <header>
+    <div class="rv">
+      <h1>Get in <em>Touch</em></h1>
+      <p class="lead">Have a question about science resources, labs, AI training, or a potential collaboration? I'd love
+        to
+        hear from you.</p>
+    </div>
+  </header>
+
+  <section id="contact">
+    <div class="cgrid">
+      <div>
+        <div class="kicker rv">Professional Inquiries</div>
+        <h2 class="sh rv">Reach <em>Me Directly</em></h2>
+        <div class="ccards">
+          <a href="mailto:contact@yamnathpoudel.com.np" class="ccard rv">
+            <div class="cico">✉️</div>
+            <div class="ctxt">
+              <h4>Email</h4>
+              <p>contact@yamnathpoudel.com.np</p>
+            </div>
+          </a>
+          <a href="tel:+9779848024521" class="ccard rv">
+            <div class="cico">📞</div>
+            <div class="ctxt">
+              <h4>Phone</h4>
+              <p>+977 9848024521</p>
+            </div>
+          </a>
+          <div class="ccard rv">
+            <div class="cico">📍</div>
+            <div class="ctxt">
+              <h4>Location</h4>
+              <p>Lumbini Province, Nepal</p>
+            </div>
+          </div>
+        </div>
+        <div class="socs rv">
+          <a href="https://www.facebook.com/yamnath.poudel.77" class="soc" title="Facebook" target="_blank">f</a>
+          <a href="https://np.linkedin.com/in/yam-nath-poudel-4a4726378" class="soc" title="LinkedIn"
+            target="_blank">in</a>
+          <a href="https://www.youtube.com/@yamnathpoudel6762/" class="soc" title="YouTube" target="_blank">▶</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <a href="index.html#home" class="fbrand">
+      <img src="images/logo.svg" alt="YNP Logo" />
+      <div>Yamnath Poudel<small>Science Educator · Author · Nepal</small></div>
+    </a>
+    <nav class="fnav">
+      <a href="index.html#home">Home</a>
+      <a href="resources.html">Resources</a>
+      <a href="links.html">Links</a>
+      <a href="tools.html">Tools</a>
+      <a href="labs.html">Virtual Labs</a>
+      <a href="contact.html" style="color:var(--gold)">Contact</a>
+    </nav>
+    <div class="fcopy">© 2026 Keshav Poudel. All rights reserved.</div>
+  </footer>
+
+  <script>
+    /* mobile menu */
+    let mo = false;
+    function toggleMob() {
+      mo = !mo;
+      document.getElementById('mob').classList.toggle('open', mo);
+      document.getElementById('hbtn').classList.toggle('open', mo);
+      document.body.style.overflow = mo ? 'hidden' : '';
+    }
+    function closeMob() { if (mo) toggleMob(); }
+
+    /* Nav scroll effect */
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('nav');
+      if (window.scrollY > 50) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    });
+
+    /* Reveal animations */
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('vis');
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+    /* Clean URLs (Hides .html from address bar on servers) */
+    if (window.location.protocol !== 'file:' && window.location.pathname.endsWith('.html')) {
+      const cleanUrl = window.location.pathname.replace(/\.html$/, '').replace(/\/index$/, '/');
+      window.history.replaceState(null, '', cleanUrl + window.location.search);
+    }
+  </script>
+</body>
+
+</html>

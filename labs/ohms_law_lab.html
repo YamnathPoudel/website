@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ohm's Law — Virtual Lab | Yam Nath Poudel</title>
+<style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --ink: #050810;
+      --gold: #c8a84b;
+      --gold2: #e2c26d;
+      --white: #ffffff;
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --font-main: 'Outfit', sans-serif;
+      --font-serif: 'Cormorant Garamond', serif;
+      --bg: #fff;
+      --bg2: #f7f7f5;
+      --t1: #111;
+      --t2: #555;
+      --t3: #999;
+      --ti: #1464a8;
+      --bdr: rgba(0, 0, 0, .1);
+      --bdrm: rgba(0, 0, 0, .18);
+      --fn: 'Outfit', system-ui, -apple-system, sans-serif;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+    }
+
+    body {
+      font-family: var(--fn);
+      background: #f0f0ee;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ══ NAV (Unified) ══ */
+    #nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0 clamp(1rem, 3vw, 3rem);
+      transition: background .3s, border-color .3s;
+      background: #000;
+    }
+
+    #nav.scrolled {
+      background: rgba(10, 15, 30, .97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(200, 168, 75, .18);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold2);
+      white-space: nowrap;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 28px;
+      width: auto;
+      border-radius: 3.5px;
+      object-fit: contain;
+      border: 1.2px solid rgba(200, 168, 75, .3);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      gap: clamp(.5rem, 1.3vw, 1.4rem);
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, .58);
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      position: relative;
+      transition: color .2s;
+      text-decoration: none;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .nav-cta {
+      flex-shrink: 0;
+      display: inline-block;
+      background: transparent;
+      border: 1px solid rgba(200, 168, 75, .45);
+      color: var(--gold);
+      padding: 6px 16px;
+      border-radius: 3px;
+      font-size: .73rem;
+      font-weight: 600;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: all .2s;
+      text-decoration: none;
+    }
+
+    .nav-cta:hover {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    .hbtn {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 5px;
+      background: none;
+      border: none;
+    }
+
+    .hbtn span {
+      width: 22px;
+      height: 1.5px;
+      background: rgba(255, 255, 255, .8);
+      display: block;
+      transition: all .28s;
+    }
+
+    /* mobile menu */
+    #mob {
+      position: fixed;
+      inset: 0;
+      background: var(--ink);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.8rem;
+      transform: translateX(100%);
+      transition: transform .42s var(--ease);
+    }
+
+    #mob.open {
+      transform: translateX(0);
+    }
+
+    #mob a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, .7);
+      transition: color .2s;
+      text-decoration: none;
+    }
+
+    @media (max-width: 900px) {
+      .nav-links, .nav-cta { display: none; }
+      .hbtn { display: flex; margin-left: auto; }
+    }
+
+    .outer {
+      width: 100%;
+      max-width: 1100px;
+      margin-top: 80px;
+      padding: 0 12px;
+    }
+
+    .lw {
+      background: #fff;
+      border: 1px solid var(--bdr);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 24px rgba(0, 0, 0, .06)
+    }
+
+    .lh {
+      padding: 16px 24px 12px;
+      border-bottom: 1px solid var(--bdr);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px
+    }
+
+    .lt {
+      font-size: 22px;
+      font-weight: 800;
+      color: #111;
+      letter-spacing: -.5px
+    }
+
+    .ls {
+      font-size: 13px;
+      color: #555;
+      margin-top: 3px
+    }
+
+    .badge {
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 20px;
+      background: #e8f5e9;
+      color: #2e7d32
+    }
+
+    .lb {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      border-bottom: 1px solid var(--bdr)
+    }
+
+    .cc {
+      border-right: 1px solid var(--bdr);
+      background: #f7f7f5;
+      display: flex;
+      flex-direction: column;
+      position: relative
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      background: #fff
+    }
+
+    .hint {
+      font-size: 11px;
+      color: #999;
+      text-align: center;
+      padding: 6px;
+      border-top: 1px solid var(--bdr)
+    }
+
+    .rc {
+      display: flex;
+      flex-direction: column;
+      background: #fff
+    }
+
+    .cg {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--bdr);
+      flex: 1
+    }
+
+    .cg:last-child {
+      border-bottom: none
+    }
+
+    .cl {
+      font-size: 11px;
+      font-weight: 800;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px
+    }
+
+    .cv2 {
+      font-size: 28px;
+      font-weight: 900;
+      color: #111;
+      margin-bottom: 10px;
+      letter-spacing: -1px;
+      line-height: 1
+    }
+
+    .cu {
+      font-size: 14px;
+      font-weight: 500;
+      color: #555
+    }
+
+    input[type=range] {
+      width: 100%;
+      height: 4px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: rgba(0, 0, 0, .18);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #111;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 1.5px rgba(0, 0, 0, .18);
+      transition: transform .15s;
+      cursor: pointer
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.25)
+    }
+
+    .ig {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--bdr);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px
+    }
+
+    .ic {
+      background: #f7f7f5;
+      border-radius: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--bdr)
+    }
+
+    .icl {
+      font-size: 10px;
+      font-weight: 800;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-bottom: 4px
+    }
+
+    .icv {
+      font-size: 20px;
+      font-weight: 900;
+      color: #111
+    }
+
+    .iceq {
+      font-size: 12px;
+      font-weight: 600;
+      color: #555;
+      margin-top: 4px;
+      line-height: 1.5
+    }
+
+    .tb {
+      padding: 20px 24px;
+      background: #fff;
+      border-top: 1px solid var(--bdr)
+    }
+
+    .tb h3 {
+      font-size: 13px;
+      font-weight: 800;
+      color: #111;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-bottom: 12px
+    }
+
+    .tg {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px
+    }
+
+    .tsec h4 {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1464a8;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .tsec h4::before {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 12px;
+      background: #1a73e8;
+      border-radius: 2px
+    }
+
+    .tl {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px
+    }
+
+    .tl li {
+      font-size: 13px;
+      color: #555;
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.5
+    }
+
+    .tl li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: #1a73e8;
+      font-weight: 900
+    }
+
+    .fc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px
+    }
+
+    .fc span {
+      background: #f0f4ff;
+      border: 1px solid #d0dcf8;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a3a8f;
+      font-family: monospace
+    }
+
+    /* ══ FOOTER ══ */
+    footer {
+      background: #050810;
+      padding: clamp(1.5rem, 3vw, 2.4rem) clamp(1.2rem, 5vw, 5rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.1rem;
+      border-top: 1px solid rgba(200, 168, 75, .1);
+      width: 100%;
+      margin-top: 48px;
+    }
+
+    .fbrand {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--gold2);
+      text-decoration: none;
+    }
+
+    .fbrand img {
+      height: 28px;
+      width: auto;
+      border-radius: 3.5px;
+      object-fit: contain;
+      border: 1px solid rgba(200, 168, 75, .25)
+    }
+
+    .fbrand small {
+      display: block;
+      font-family: 'Outfit', sans-serif;
+      font-size: .62rem;
+      color: rgba(255, 255, 255, .24);
+      font-weight: 400;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-top: .1rem
+    }
+
+    .fnav {
+      display: flex;
+      gap: 1.3rem;
+      flex-wrap: wrap
+    }
+
+    .fnav a {
+      font-size: .7rem;
+      color: rgba(255, 255, 255, .24);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      transition: color .18s;
+      text-decoration: none;
+    }
+
+    .fnav a:hover {
+      color: var(--gold)
+    }
+
+    .fcopy {
+      font-size: .66rem;
+      color: rgba(255, 255, 255, .17)
+    }
+
+    @media(max-width:680px) {
+      .lb { grid-template-columns: 1fr }
+      .cc { border-right: none; border-bottom: 1px solid var(--bdr) }
+      .ig { grid-template-columns: 1fr 1fr }
+      .tg { grid-template-columns: 1fr }
+      footer { flex-direction: column; align-items: flex-start }
+      .fnav { gap: .8rem }
+    }
+.outer{width:100%;max-width:1100px;}
+.lw{background:#fff;border:1px solid var(--bdr);border-radius:16px;overflow:hidden;box-shadow:0 2px 24px rgba(0,0,0,.06)}
+.lh{padding:16px 24px 12px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.lt{font-size:22px;font-weight:800;color:#111;letter-spacing:-.5px}
+.ls{font-size:13px;color:#555;margin-top:3px}
+.badge{font-size:13px;font-weight:700;padding:6px 16px;border-radius:20px;background:#e8f5e9;color:#2e7d32}
+.lb{display:grid;grid-template-columns:1fr 300px;border-bottom:1px solid var(--bdr)}
+.cc{border-right:1px solid var(--bdr);background:#f7f7f5;display:flex;flex-direction:column;position:relative}
+canvas{display:block;width:100%;background:#fff}
+.hint{font-size:11px;color:#999;text-align:center;padding:6px;border-top:1px solid var(--bdr)}
+.rc{display:flex;flex-direction:column;background:#fff}
+.cg{padding:14px 20px;border-bottom:1px solid var(--bdr);flex:1}
+.cg:last-child{border-bottom:none}
+.cl{font-size:11px;font-weight:800;color:#999;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.cv2{font-size:28px;font-weight:900;color:#111;margin-bottom:10px;letter-spacing:-1px;line-height:1}
+.cu{font-size:14px;font-weight:500;color:#555}
+input[type=range]{width:100%;height:4px;-webkit-appearance:none;appearance:none;background:rgba(0,0,0,.18);border-radius:2px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#111;border:3px solid #fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.18);transition:transform .15s;cursor:pointer}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.25)}
+.ig{padding:16px 24px;border-bottom:1px solid var(--bdr);display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.ic{background:#f7f7f5;border-radius:10px;padding:12px 14px;border:1px solid var(--bdr)}
+.icl{font-size:10px;font-weight:800;color:#999;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
+.icv{font-size:20px;font-weight:900;color:#111}
+.iceq{font-size:12px;font-weight:600;color:#555;margin-top:4px;line-height:1.5}
+.tb{padding:20px 24px;background:#fff;border-top:1px solid var(--bdr)}
+.tb h3{font-size:13px;font-weight:800;color:#111;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
+.tg{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.tsec h4{font-size:12px;font-weight:700;color:#1464a8;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.tsec h4::before{content:'';display:inline-block;width:3px;height:12px;background:#1a73e8;border-radius:2px}
+.tl{list-style:none;display:flex;flex-direction:column;gap:4px}
+.tl li{font-size:13px;color:#555;padding-left:14px;position:relative;line-height:1.5}
+.tl li::before{content:'·';position:absolute;left:0;color:#1a73e8;font-weight:900}
+.fc{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.fc span{background:#f0f4ff;border:1px solid #d0dcf8;border-radius:8px;padding:6px 14px;font-size:13px;font-weight:700;color:#1a3a8f;font-family:monospace}
+@media(max-width:680px){.lb{grid-template-columns:1fr}.cc{border-right:none;border-bottom:1px solid var(--bdr)}.ig{grid-template-columns:1fr 1fr}.tg{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+  <!-- Mobile overlay -->
+  <div id="mob">
+    <a href="../index.html#home" onclick="closeMob()">Home</a>
+    <a href="../resources.html" onclick="closeMob()">Resources</a>
+    <a href="../links.html" onclick="closeMob()">Links</a>
+    <a href="../tools.html" onclick="closeMob()">Tools</a>
+    <a href="../labs.html" onclick="closeMob()">Virtual Labs</a>
+    <a href="../contact.html" onclick="closeMob()">Contact</a>
+  </div>
+
+  <!-- ══ NAV ══ -->
+  <nav id="nav">
+    <a class="nav-logo" href="../index.html#home">
+      <img src="../images/logo.svg" alt="YNP Logo" loading="lazy" />
+      Yamnath Poudel
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#home">Home</a></li>
+      <li><a href="../resources.html">Resources</a></li>
+      <li><a href="../links.html">Links</a></li>
+      <li><a href="../tools.html">Tools</a></li>
+      <li><a href="../labs.html" style="color:var(--gold)">Virtual Labs</a></li>
+    </ul>
+    <a href="../contact.html" class="nav-cta">Contact</a>
+    <button class="hbtn" id="hbtn" onclick="toggleMob()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+<div class="outer">
+  <div class="lw">
+    <div class="lh">
+      <div>
+        <div class="lt">Ohm's Law</div>
+        <div class="ls">Voltage · Current · Resistance · V = IR</div>
+      </div>
+      <div class="badge" id="caseBadge">Ohmic Conductor</div>
+    </div>
+    <div class="lb">
+      <div class="cc">
+        <canvas id="mainCanvas" height="380"></canvas>
+        <div class="hint">&#9654; Adjust sliders to change Voltage and Resistance · Watch current & graph update</div>
+      </div>
+      <div class="rc">
+        <div class="cg">
+          <div class="cl">Voltage (V)</div>
+          <div class="cv2"><span id="vVal">6.0</span> <span class="cu">V</span></div>
+          <input type="range" id="vSlider" min="0.5" max="20" value="6" step="0.5">
+        </div>
+        <div class="cg">
+          <div class="cl">Resistance (R)</div>
+          <div class="cv2"><span id="rVal">3.0</span> <span class="cu">Ω</span></div>
+          <input type="range" id="rSlider" min="1" max="20" value="3" step="0.5">
+        </div>
+        <div class="cg">
+          <div class="cl">Current (I = V/R)</div>
+          <div class="cv2" id="iDisplay">2.00 <span class="cu">A</span></div>
+        </div>
+        <div class="cg">
+          <div class="cl">Power (P = VI)</div>
+          <div class="cv2" id="pDisplay">12.00 <span class="cu">W</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="ig">
+      <div class="ic">
+        <div class="icl">Current</div>
+        <div class="icv" id="iCard">2.00 A</div>
+      </div>
+      <div class="ic">
+        <div class="icl">Power</div>
+        <div class="icv" id="pCard">12.00 W</div>
+      </div>
+      <div class="ic">
+        <div class="icl">Ohm's Law</div>
+        <div class="iceq">V = I × R<br>I = V / R</div>
+      </div>
+      <div class="ic">
+        <div class="icl">Energy (1 min)</div>
+        <div class="icv" id="eCard">720 J</div>
+      </div>
+    </div>
+    <div class="tb">
+      <h3>Key Concepts &amp; Formulas</h3>
+      <div class="tg">
+        <div class="tsec">
+          <h4>Key Concepts</h4>
+          <ul class="tl">
+            <li>Ohm's Law: Current (I) is directly proportional to voltage (V).</li>
+            <li>Current is inversely proportional to resistance (R).</li>
+            <li>Ohmic conductors show a linear V-I relationship (straight line).</li>
+            <li>Resistance depends on the material, length, and temperature.</li>
+          </ul>
+        </div>
+        <div>
+          <div class="tsec">
+            <h4>Essential Formulas</h4>
+            <div class="fc">
+              <span>V = IR</span>
+              <span>P = VI</span>
+              <span>P = I²R</span>
+              <span>E = Pt</span>
+            </div>
+          </div>
+          <div class="tsec" style="margin-top:12px">
+            <h4>Variable Meanings</h4>
+            <ul class="tl">
+              <li><strong>V</strong> = Voltage (Volts) &nbsp; <strong>I</strong> = Current (Amperes)</li>
+              <li><strong>R</strong> = Resistance (Ohms) &nbsp; <strong>P</strong> = Power (Watts)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <a href="../index.html#home" class="fbrand">
+      <img src="../images/logo.svg" alt="YNP Logo" />
+      <div>Yamnath Poudel<small>Science Educator · Author · Nepal</small></div>
+    </a>
+    <nav class="fnav">
+      <a href="../index.html#home">Home</a>
+      <a href="../resources.html">Resources</a>
+      <a href="../links.html">Links</a>
+      <a href="../tools.html">Tools</a>
+      <a href="../labs.html" style="color:var(--gold)">Virtual Labs</a>
+      <a href="../contact.html">Contact</a>
+    </nav>
+    <div class="fcopy">© 2026 Keshav Poudel. All rights reserved.</div>
+  </footer>
+
+  <script>
+    /* mobile menu */
+    let mo = false;
+    function toggleMob() {
+      mo = !mo;
+      document.getElementById('mob').classList.toggle('open', mo);
+      document.getElementById('hbtn').classList.toggle('open', mo);
+      document.body.style.overflow = mo ? 'hidden' : '';
+    }
+    function closeMob() { if (mo) toggleMob(); }
+
+    /* Nav scroll effect */
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('nav');
+      if (window.scrollY > 50) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    });
+
+    const canvas = document.getElementById('mainCanvas');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    let V = 6, R = 3;
+
+    function isDark() { return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; }
+    function getColors() {
+      const d = isDark();
+      return {
+        bg: d ? '#252523' : '#f5f5f3',
+        grid: d ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
+        axis: d ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
+        wire: d ? '#888' : '#555',
+        batPos: d ? '#ef5350' : '#c62828',
+        batNeg: d ? '#42a5f5' : '#1565c0',
+        bulb: d ? '#ffd54f' : '#f57f17',
+        bulbGlow: 'rgba(255,213,79,',
+        res: d ? '#ab47bc' : '#7b1fa2',
+        cur: d ? '#26c6da' : '#00838f',
+        graph: d ? '#66bb6a' : '#2e7d32',
+        text: d ? '#f0efe8' : '#1a1a1a',
+        textSec: d ? '#9b9b98' : '#6b6b68',
+      };
+    }
+
+    function resize() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      W = rect.width; H = 380;
+      canvas.width = Math.round(W * devicePixelRatio);
+      canvas.height = Math.round(H * devicePixelRatio);
+      canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+      ctx.scale(devicePixelRatio, devicePixelRatio);
+      CX = W / 2; CY = H / 2;
+      draw();
+    }
+
+    function draw() {
+      const C = getColors();
+      const I = V / R;
+      const P = V * I;
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+
+      // === CIRCUIT (left half) ===
+      const cx = W * 0.30, cy = H * 0.45;
+      const bw = 80, bh = 130;
+
+      // Grid
+      ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+      for (let x = 0; x < W * 0.55; x += 30) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+      for (let y = 0; y < H; y += 30) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W * 0.55, y); ctx.stroke(); }
+
+      // Wires — rectangular loop
+      const lx = cx - bw / 2 - 50, rx = cx + bw / 2 + 50, ty = cy - bh / 2 - 30, by = cy + bh / 2 + 30;
+      ctx.strokeStyle = C.wire; ctx.lineWidth = 3; ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.moveTo(lx, ty); ctx.lineTo(rx, ty);   // top
+      ctx.moveTo(lx, by); ctx.lineTo(rx, by);   // bottom
+      ctx.moveTo(lx, ty); ctx.lineTo(lx, by);   // left
+      ctx.moveTo(rx, ty); ctx.lineTo(rx, by);   // right
+      ctx.stroke();
+
+      // Battery (left side center)
+      const bx = lx; const bcy = cy;
+      drawBattery(bx, bcy, I, C);
+
+      // Resistor (top wire)
+      const mid = (lx + rx) / 2;
+      drawResistor(mid, ty, C);
+
+      // Bulb (right side)
+      drawBulb(rx, cy, I, C);
+
+      // Current arrows
+      const speed = Math.min(I * 8, 25);
+      const t = (Date.now() / 1000) % 1;
+      drawCurrentArrow(mid, ty, t, C.cur, speed, 'h'); // top wire
+      drawCurrentArrow(rx, bcy, t, C.cur, speed, 'v'); // right wire down
+
+      // === V-I GRAPH (right half) ===
+      const gx = W * 0.58, gy = H * 0.12, gw = W * 0.37, gh = H * 0.72;
+      drawGraph(gx, gy, gw, gh, I, V, R, C);
+
+      // Labels
+      ctx.fillStyle = C.text; ctx.font = 'bold 13px system-ui';
+      ctx.textAlign = 'center';
+      ctx.fillText('Circuit Diagram', cx, H - 18);
+      ctx.fillText('V–I Graph', gx + gw / 2, H - 18);
+
+      updateUI(I, P);
+      requestAnimationFrame(draw);
+    }
+
+    function drawBattery(x, y, I, C) {
+      const h = 60, w = 22;
+      ctx.fillStyle = C.batPos; ctx.fillRect(x - w / 2, y - h / 2, w, h / 2 - 4);
+      ctx.fillStyle = C.batNeg; ctx.fillRect(x - w / 2, y + 4, w, h / 2 - 4);
+      ctx.strokeStyle = C.batPos; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(x - 14, y - 4); ctx.lineTo(x + 14, y - 4); ctx.stroke();
+      ctx.strokeStyle = C.batNeg; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(x - 9, y + 4); ctx.lineTo(x + 9, y + 4); ctx.stroke();
+      ctx.fillStyle = C.text; ctx.font = 'bold 12px system-ui'; ctx.textAlign = 'center';
+      ctx.fillText('+ ' + V.toFixed(1) + 'V', x, y - h / 2 - 8);
+    }
+
+    function drawResistor(x, y, C) {
+      ctx.save();
+      ctx.strokeStyle = C.res; ctx.lineWidth = 2.5;
+      const rw = 50, rh = 16;
+      ctx.strokeRect(x - rw / 2, y - rh / 2, rw, rh);
+      ctx.fillStyle = C.res;
+      ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center';
+      ctx.fillText(R.toFixed(1) + 'Ω', x, y - rh / 2 - 6);
+      // zigzag inside
+      ctx.beginPath(); ctx.lineWidth = 1.5;
+      let sx = x - rw / 2 + 6;
+      ctx.moveTo(sx, y);
+      for (let i = 0; i < 6; i++) { ctx.lineTo(sx + 6 * (i % 2 === 0 ? 1 : -1) * 0.5 + 6, y + (i % 2 === 0 ? -6 : 6)); sx += 6; }
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawBulb(x, y, I, C) {
+      const glow = Math.min(I / 10, 1);
+      if (glow > 0.05) {
+        const grad = ctx.createRadialGradient(x, y, 0, x, y, 35 + glow * 20);
+        grad.addColorStop(0, C.bulbGlow + (glow * 0.6) + ')');
+        grad.addColorStop(1, 'rgba(255,213,79,0)');
+        ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(x, y, 55, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.strokeStyle = C.bulb; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.arc(x, y, 18, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = C.bulbGlow + (0.1 + glow * 0.7) + ')';
+      ctx.fill();
+      ctx.strokeStyle = C.bulb; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(x - 8, y); ctx.lineTo(x + 8, y); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x, y - 8); ctx.lineTo(x, y + 8); ctx.stroke();
+    }
+
+    function drawCurrentArrow(x, y, t, color, speed, dir) {
+      ctx.fillStyle = color;
+      const pos = (t * speed * 2) % 30;
+      for (let i = 0; i < 3; i++) {
+        const d = (pos + i * 30) % 90 - 15;
+        if (dir === 'h') { // horizontal arrow on wire
+          ctx.beginPath();
+          const px = x + d; const py = y;
+          ctx.moveTo(px, py); ctx.lineTo(px - 8, py - 5); ctx.lineTo(px - 8, py + 5); ctx.closePath(); ctx.fill();
+        }
+      }
+    }
+
+    function drawGraph(gx, gy, gw, gh, I, V, R, C) {
+      // Background
+      ctx.fillStyle = C.bg; ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.rect(gx, gy, gw, gh); ctx.fill(); ctx.stroke();
+
+      // Grid
+      ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+      for (let i = 1; i < 5; i++) {
+        ctx.beginPath(); ctx.moveTo(gx, gy + gh * i / 5); ctx.lineTo(gx + gw, gy + gh * i / 5); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(gx + gw * i / 5, gy); ctx.lineTo(gx + gw * i / 5, gy + gh); ctx.stroke();
+      }
+
+      // Plot V-I line for current R
+      ctx.strokeStyle = C.graph; ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      const maxV = 22, maxI = 22 / 1;
+      for (let v = 0; v <= 22; v += 0.5) {
+        const ii = v / R;
+        const px = gx + gw * v / 22;
+        const py = gy + gh - (gh * Math.min(ii, 22) / 22);
+        if (v === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+
+      // Current point
+      const px = gx + gw * V / 22, py = gy + gh - (gh * Math.min(I, 22) / 22);
+      ctx.beginPath(); ctx.arc(px, py, 6, 0, Math.PI * 2);
+      ctx.fillStyle = C.graph; ctx.fill();
+      ctx.strokeStyle = 'white'; ctx.lineWidth = 2; ctx.stroke();
+
+      // Labels
+      ctx.fillStyle = C.textSec; ctx.font = '11px system-ui'; ctx.textAlign = 'center';
+      ctx.fillText('Voltage (V)', gx + gw / 2, gy + gh + 18);
+      ctx.save(); ctx.translate(gx - 22, gy + gh / 2); ctx.rotate(-Math.PI / 2);
+      ctx.fillText('Current (A)', 0, 0); ctx.restore();
+      ctx.fillStyle = C.text; ctx.font = 'bold 12px system-ui';
+      ctx.fillText('R = ' + R.toFixed(1) + 'Ω', gx + gw - 30, gy + 14);
+
+      // Axis ticks
+      ctx.fillStyle = C.textSec; ctx.font = '10px system-ui';
+      for (let i = 0; i <= 4; i++) {
+        ctx.textAlign = 'right'; ctx.fillText((22 * i / 4).toFixed(0) + 'V', gx + gw * i / 4 + 8, gy + gh + 14);
+        const iv = (22 / R) * (i / 4);
+        ctx.textAlign = 'right'; if (iv < 99) ctx.fillText(iv.toFixed(1), gx - 4, gy + gh - gh * i / 4 + 4);
+      }
+    }
+
+    function updateUI(I, P) {
+      document.getElementById('vVal').textContent = V.toFixed(1);
+      document.getElementById('rVal').textContent = R.toFixed(1);
+      document.getElementById('iDisplay').innerHTML = I.toFixed(2) + ' <span class="ctrl-unit">A</span>';
+      document.getElementById('pDisplay').innerHTML = P.toFixed(2) + ' <span class="ctrl-unit">W</span>';
+      document.getElementById('iCard').textContent = I.toFixed(2) + ' A';
+      document.getElementById('pCard').textContent = P.toFixed(2) + ' W';
+      document.getElementById('eCard').textContent = (P * 60).toFixed(0) + ' J';
+      const badge = I < 1 ? 'Low Current' : I < 5 ? 'Normal Current' : 'High Current';
+      document.getElementById('caseBadge').textContent = badge;
+    }
+
+    document.getElementById('vSlider').addEventListener('input', e => { V = +e.target.value; });
+    document.getElementById('rSlider').addEventListener('input', e => { R = +e.target.value; });
+
+    window.addEventListener('resize', resize);
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { });
+    resize();
+  </script>
+</body>
+
+</html>

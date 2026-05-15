@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Labs | Yam Nath Poudel</title>
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
+  <meta name="description"
+    content="Interactive science simulations and virtual experiments for hands-on learning.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Outfit:wght@100..900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --ink: #050810;
+      --gold: #c8a84b;
+      --gold2: #e2c26d;
+      --white: #ffffff;
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --card-bg: rgba(255, 255, 255, 0.02);
+      --font-main: 'Outfit', sans-serif;
+      --font-serif: 'Cormorant Garamond', serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 110%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--ink);
+      color: var(--white);
+      font-family: var(--font-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ══ BACKGROUND ══ */
+    .bg-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% -20%, #1a233a 0%, transparent 60%);
+      z-index: -1;
+      opacity: 0.6;
+    }
+
+    /* ══ NAV (Unified) ══ */
+    #nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0 clamp(1rem, 3vw, 3rem);
+      transition: background .3s, border-color .3s;
+      background: #000;
+    }
+
+    #nav.scrolled {
+      background: rgba(10, 15, 30, .97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(200, 168, 75, .18);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold2);
+      white-space: nowrap;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 28px;
+      width: auto;
+      border-radius: 3.5px;
+      object-fit: contain;
+      border: 1.2px solid rgba(200, 168, 75, .3);
+    }
+
+    .nav-logo em {
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(255, 255, 255, .6);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      gap: clamp(.5rem, 1.3vw, 1.4rem);
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, .58);
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      position: relative;
+      transition: color .2s;
+      text-decoration: none;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--gold);
+      transition: width .25s var(--ease);
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      flex-shrink: 0;
+      display: inline-block;
+      background: transparent;
+      border: 1px solid rgba(200, 168, 75, .45);
+      color: var(--gold);
+      padding: 6px 16px;
+      border-radius: 3px;
+      font-size: .73rem;
+      font-weight: 600;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: all .2s;
+      text-decoration: none;
+    }
+
+    .nav-cta:hover {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    /* hamburger */
+    .hbtn {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 5px;
+      background: none;
+      border: none;
+      flex-shrink: 0;
+    }
+
+    .hbtn span {
+      width: 22px;
+      height: 1.5px;
+      background: rgba(255, 255, 255, .8);
+      display: block;
+      transition: all .28s;
+    }
+
+    .hbtn.open span:nth-child(1) {
+      transform: rotate(45deg) translate(4px, 5px);
+    }
+
+    .hbtn.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hbtn.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(4px, -5px);
+    }
+
+    /* mobile menu */
+    #mob {
+      position: fixed;
+      inset: 0;
+      background: var(--ink);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.8rem;
+      transform: translateX(100%);
+      transition: transform .42s var(--ease);
+    }
+
+    #mob.open {
+      transform: translateX(0);
+    }
+
+    #mob a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, .7);
+      transition: color .2s;
+      text-decoration: none;
+    }
+
+    #mob a:hover {
+      color: var(--gold);
+    }
+
+    @media (max-width: 900px) {
+
+      .nav-links,
+      .nav-cta {
+        display: none;
+      }
+
+      .hbtn {
+        display: flex;
+        margin-left: auto;
+      }
+    }
+
+    /* ══ HERO ══ */
+    header {
+      padding: 1.5rem 5% 1.5rem;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 5.5vw, 4.2rem);
+      margin-bottom: 0.3rem;
+      background: linear-gradient(to right, #fff, var(--gold2), #fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .lead {
+      color: rgba(255, 255, 255, 0.5);
+      max-width: 600px;
+      margin: 0 auto 0.8rem;
+    }
+
+    /* ══ BLOG FEED ══ */
+    .blog-feed {
+      max-width: 1000px;
+      margin: 0 auto 5rem;
+      padding: 0 5%;
+    }
+
+    .blog-card {
+      display: flex;
+      gap: 3rem;
+      margin-bottom: 4rem;
+      text-decoration: none;
+      color: white;
+      align-items: center;
+      transition: all 0.4s;
+      padding: 1.5rem;
+      border-radius: 20px;
+      border: 1px solid transparent;
+    }
+
+    .blog-card:hover {
+      background: rgba(255, 255, 255, 0.02);
+      border-color: var(--glass-border);
+      transform: translateX(10px);
+    }
+
+    .blog-date {
+      font-size: 0.75rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .blog-info h2 {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+      color: var(--white);
+      transition: color 0.3s;
+    }
+
+    .blog-card:hover h2 {
+      color: var(--gold2);
+    }
+
+    .blog-info p {
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      max-width: 650px;
+    }
+
+    .read-more {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      background: var(--gold);
+      color: var(--ink);
+      font-size: 0.65rem;
+      font-weight: 800;
+      border-radius: 4px;
+      margin-bottom: 0.8rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* ══ GUIDE BOX (For Admin) ══ */
+    .admin-guide {
+      background: rgba(200, 168, 75, 0.03);
+      border: 1px dashed rgba(200, 168, 75, 0.2);
+      padding: 2rem;
+      border-radius: 12px;
+      margin-bottom: 4rem;
+    }
+
+    .admin-guide h4 {
+      color: var(--gold);
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .admin-guide code {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .blog-card {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: flex-start;
+      }
+
+      .blog-info h2 {
+        font-size: 1.8rem;
+      }
+    }
+
+    /* ══ FOOTER ══ */
+    footer {
+      background: #050810;
+      padding: clamp(1.5rem, 3vw, 2.4rem) clamp(1.2rem, 5vw, 5rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.1rem;
+      border-top: 1px solid rgba(200, 168, 75, .1);
+    }
+
+    .fbrand {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--gold2);
+      text-decoration: none;
+    }
+
+    .fbrand img {
+      height: 28px;
+      width: auto;
+      border-radius: 3.5px;
+      object-fit: contain;
+      border: 1px solid rgba(200, 168, 75, .25)
+    }
+
+    .fbrand small {
+      display: block;
+      font-family: 'Outfit', sans-serif;
+      font-size: .62rem;
+      color: rgba(255, 255, 255, .24);
+      font-weight: 400;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-top: .1rem
+    }
+
+    .fnav {
+      display: flex;
+      gap: 1.3rem;
+      flex-wrap: wrap
+    }
+
+    .fnav a {
+      font-size: .7rem;
+      color: rgba(255, 255, 255, .24);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      transition: color .18s;
+      text-decoration: none;
+    }
+
+    .fnav a:hover {
+      color: var(--gold)
+    }
+
+    .fcopy {
+      font-size: .66rem;
+      color: rgba(255, 255, 255, .17)
+    }
+
+    @media(max-width:500px) {
+      footer {
+        flex-direction: column;
+        align-items: flex-start
+      }
+
+      .fnav {
+        gap: .8rem
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-glow"></div>
+
+  <!-- Mobile overlay -->
+  <div id="mob">
+    <a href="index.html#home" onclick="closeMob()">Home</a>
+    <a href="resources.html" onclick="closeMob()">Resources</a>
+    <a href="links.html" onclick="closeMob()">Links</a>
+    <a href="tools.html" onclick="closeMob()">Tools</a>
+    <a href="labs.html" onclick="closeMob()">Virtual Labs</a>
+    <a href="contact.html" onclick="closeMob()">Contact</a>
+  </div>
+
+  <!-- ══ NAV ══ -->
+  <nav id="nav">
+    <a class="nav-logo" href="index.html#home">
+      <img src="images/logo.svg" alt="YNP Logo" loading="lazy" />
+      Yamnath Poudel<em></em>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#home">Home</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="links.html">Links</a></li>
+      <li><a href="tools.html">Tools</a></li>
+      <li><a href="labs.html" style="color:var(--gold)">Virtual Labs</a></li>
+    </ul>
+    <a href="contact.html" class="nav-cta">Contact</a>
+    <button class="hbtn" id="hbtn" onclick="toggleMob()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div style="height: 60px;"></div> <!-- Spacer for fixed nav -->
+
+  <header>
+    <h1>Virtual <em>Labs</em></h1>
+    <p class="lead">Interactive science simulations and virtual experiments designed to make complex concepts intuitive and engaging.</p>
+  </header>
+
+  <main class="blog-feed">
+    <!-- VIRTUAL LAB: CONVEX LENS -->
+    <a href="labs/convex_lens_virtual_lab.html" class="blog-card">
+      <div class="blog-info">
+        <div class="badge">Physics Simulation</div>
+        <span class="blog-date">Interactive Lab</span>
+        <h2>Convex Lens Ray Diagram</h2>
+        <p>Explore how light behaves with a convex lens. Adjust focal length, object distance, and height to visualize real and virtual image formation in real-time.</p>
+        <div class="read-more">Start Experiment →</div>
+      </div>
+    </a>
+
+    <!-- VIRTUAL LAB: OHMS LAW -->
+    <a href="labs/ohms_law_lab.html" class="blog-card">
+      <div class="blog-info">
+        <div class="badge">Electricity Simulation</div>
+        <span class="blog-date">Interactive Lab</span>
+        <h2>Ohm's Law Simulation</h2>
+        <p>Understand the relationship between Voltage, Current, and Resistance. Adjust parameters to see the V-I graph update dynamically and watch the circuit in action.</p>
+        <div class="read-more">Start Experiment →</div>
+      </div>
+    </a>
+  </main>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <a href="index.html#home" class="fbrand">
+      <img src="images/logo.svg" alt="YNP Logo" />
+      <div>Yamnath Poudel<small>Science Educator · Author · Nepal</small></div>
+    </a>
+    <nav class="fnav">
+      <a href="index.html#home">Home</a>
+      <a href="resources.html">Resources</a>
+      <a href="links.html">Links</a>
+      <a href="tools.html">Tools</a>
+      <a href="labs.html" style="color:var(--gold)">Virtual Labs</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="fcopy">© 2026 Keshav Poudel. All rights reserved.</div>
+  </footer>
+
+  <script>
+    /* mobile menu */
+    let mo = false;
+    function toggleMob() {
+      mo = !mo;
+      document.getElementById('mob').classList.toggle('open', mo);
+      document.getElementById('hbtn').classList.toggle('open', mo);
+      document.body.style.overflow = mo ? 'hidden' : '';
+    }
+    function closeMob() { if (mo) toggleMob(); }
+
+    // Navigation scroll effect
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('nav');
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    // Initial Render
+    window.onload = () => {
+      /* Clean URLs (Hides .html from address bar on servers) */
+      if (window.location.protocol !== 'file:' && window.location.pathname.endsWith('.html')) {
+        const cleanUrl = window.location.pathname.replace(/\.html$/, '').replace(/\/index$/, '/');
+        window.history.replaceState(null, '', cleanUrl + window.location.search);
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+    }
+  </script>
+</body>
+
+</html>
