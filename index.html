@@ -9,7 +9,7 @@
   <title>Yamnath Poudel — Science Educator & Author</title>
   <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=Mukta:wght@400;600;700;800&display=swap"
     rel="stylesheet" />
   <style>
     :root {
@@ -43,7 +43,7 @@
     }
 
     body {
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Outfit', 'Mukta', sans-serif;
       background: var(--ink);
       color: rgba(255, 255, 255, 0.85);
       overflow-x: hidden
@@ -96,7 +96,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 0.5rem clamp(1rem, 3vw, 3rem);
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Outfit', 'Mukta', sans-serif;
       font-size: 0.72rem;
       letter-spacing: 0.03em;
       color: rgba(255, 255, 255, 0.9);
@@ -270,32 +270,47 @@
     #mob {
       position: fixed;
       inset: 0;
-
-      background: rgba(59, 106, 236, 0.7);
-      z-index: 999;
+      background: rgba(10, 15, 30, 0.98);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 2000;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 1.8rem;
       transform: translateX(100%);
-      transition: transform .42s var(--ease);
+      transition: transform .4s var(--ease);
+      border-left: 1px solid rgba(200, 168, 75, 0.1);
+    }
+
+    #mob::before {
+      content: '';
+      position: absolute;
+      top: -10%;
+      right: -10%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(200, 168, 75, 0.08) 0%, transparent 70%);
+      pointer-events: none;
     }
 
     #mob.open {
-      transform: translateX(0)
+      transform: translateX(0);
     }
 
     #mob a {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 700;
       color: rgba(255, 255, 255, .7);
-      transition: color .2s
+      transition: all .3s;
+      letter-spacing: 0.02em;
     }
 
     #mob a:hover {
-      color: var(--gold)
+      color: var(--gold);
+      transform: scale(1.05);
     }
 
     /* ══ HERO — TRUE SPLIT LAYOUT ══ */
@@ -1052,7 +1067,7 @@
     .bstat small {
       font-size: .73rem;
       color: rgba(255, 255, 255, .28);
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Outfit', 'Mukta', sans-serif;
       font-weight: 400
     }
 
@@ -1497,7 +1512,7 @@
 
     .fbrand small {
       display: block;
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Outfit', 'Mukta', sans-serif;
       font-size: .62rem;
       color: rgba(255, 255, 255, .24);
       font-weight: 400;
@@ -1902,6 +1917,7 @@
   <!-- Mobile overlay -->
   <div id="mob">
     <a href="index.html#home" onclick="closeMob()">Home</a>
+    <a href="notes.html" onclick="closeMob()">Notes</a>
     <a href="resources.html" onclick="closeMob()">Resources</a>
     <a href="links.html" onclick="closeMob()">Links</a>
     <a href="tools.html" onclick="closeMob()">Tools</a>
@@ -1925,7 +1941,8 @@
       Yamnath Poudel<em></em>
     </a>
     <ul class="nav-links">
-      <li><a href="#home">Home</a></li>
+      <li><a href="index.html#home">Home</a></li>
+      <li><a href="notes.html">Notes</a></li>
       <li><a href="resources.html">Resources</a></li>
       <li><a href="links.html">Links</a></li>
       <li><a href="tools.html">Tools</a></li>
@@ -2081,24 +2098,36 @@
       <!-- Book 1: Class 8 Nepali -->
       <div class="bk rv">
         <div class="bk-cover">
-          <img src="images/8 Nepali.jpeg" alt="Science and Technology Class 8 Nepali" loading="lazy" />
+          <img src="images/book9.jpg" alt="Science and Technology Class 8 Nepali" loading="lazy" />
         </div>
         <div class="bk-body">
-          <span class="bk-class">कक्षा 8/BLE नेपाली माध्ययम</span>
+          <span class="bk-class">Class 8 · Nepali Medium</span>
           <h3>सरल विज्ञान तथा प्रविधि</h3>
-          <p> म्यानुअल तथा अभ्यास पुस्तक Based on the new CDC curriculum.</p>
+          <p>Manual and Practice Book for Class 8 students. Based on the new CDC curriculum.</p>
+          <a href="https://forms.gle/An4Ta4a6kqsoMSPU6" class="bk-lnk" target="_blank">Buy Now →</a>
+        </div>
+      </div>
+      <!-- Book 2: Class 9 Nepali -->
+      <div class="bk rv">
+        <div class="bk-cover">
+          <img src="images/book9.jpg" alt="Science and Technology Class 9 Nepali" loading="lazy" />
+        </div>
+        <div class="bk-body">
+          <span class="bk-class">Class 9 · Nepali Medium</span>
+          <h3>सरल विज्ञान तथा प्रविधि</h3>
+          <p>Comprehensive science manual for Grade 9 with simplified explanations and exercises.</p>
           <a href="https://forms.gle/An4Ta4a6kqsoMSPU6" class="bk-lnk" target="_blank">Buy Now →</a>
         </div>
       </div>
       <!-- Book 3: Class 10/SEE Nepali -->
       <div class="bk rv">
         <div class="bk-cover">
-          <img src="images/10 Nepali.jpeg" alt="Science and Technology Class 10 SEE Nepali" loading="lazy" />
+          <img src="images/book10.jpg" alt="Science and Technology Class 10 SEE Nepali" loading="lazy" />
         </div>
         <div class="bk-body">
-          <span class="bk-class">कक्षा 10/SEE नेपाली माध्ययम </span>
+          <span class="bk-class">Class 10/SEE · Nepali Medium</span>
           <h3>सरल विज्ञान तथा प्रविधि</h3>
-          <p>Best-selling SEE preparation Manual and Practice Book. Includes practice sets and model solutions.</p>
+          <p>Best-selling SEE preparation manual. Includes practice sets and model solutions.</p>
           <a href="https://forms.gle/An4Ta4a6kqsoMSPU6" class="bk-lnk" target="_blank">Buy Now →</a>
         </div>
       </div>
@@ -2107,24 +2136,36 @@
       <!-- Book 4: Class 8 English -->
       <div class="bk rv">
         <div class="bk-cover">
-          <img src="images/8 English.jpeg" alt="Science and Technology Class 8 English " loading="lazy" />
+          <img src="images/book9.jpg" alt="Science and Technology Class 8 English" loading="lazy" />
         </div>
         <div class="bk-body">
-          <span class="bk-class">Class 8/BLE· English Medium</span>
-          <h3>Science & Technology Manual and Practice Book</h3>
+          <span class="bk-class">Class 8 · English Medium</span>
+          <h3>Science & Technology Manual</h3>
           <p>English Medium edition for Grade 8, focusing on clear concepts and hands-on learning.</p>
+          <a href="https://forms.gle/An4Ta4a6kqsoMSPU6" class="bk-lnk" target="_blank">Buy Now →</a>
+        </div>
+      </div>
+      <!-- Book 5: Class 9 English -->
+      <div class="bk rv">
+        <div class="bk-cover">
+          <img src="images/book9.jpg" alt="Science and Technology Class 9 English" loading="lazy" />
+        </div>
+        <div class="bk-body">
+          <span class="bk-class">Class 9 · English Medium</span>
+          <h3>Science & Technology Manual</h3>
+          <p>Detailed manual for Grade 9 English Medium students with practice question sets.</p>
           <a href="https://forms.gle/An4Ta4a6kqsoMSPU6" class="bk-lnk" target="_blank">Buy Now →</a>
         </div>
       </div>
       <!-- Book 6: Class 10/SEE English -->
       <div class="bk rv">
         <div class="bk-cover">
-          <img src="images/10 Eng.jpeg" alt="Science and Technology Class 10 SEE English" loading="lazy" />
+          <img src="images/book101.jpg" alt="Science and Technology Class 10 SEE English" loading="lazy" />
         </div>
         <div class="bk-body">
           <span class="bk-class">Class 10/SEE · English Medium</span>
-          <h3>Saral Science & Technology Manual and Practice Book</h3>
-          <p>The ultimate English Medium Manual and Practice Book for 10/SEE success, featuring the latest exam patterns.</p>
+          <h3>Science & Technology Master</h3>
+          <p>The ultimate English Medium guide for SEE success, featuring the latest exam patterns.</p>
           <a href="https://forms.gle/An4Ta4a6kqsoMSPU6" class="bk-lnk" target="_blank">Buy Now →</a>
         </div>
       </div>
@@ -2143,6 +2184,12 @@
         <h3>Practice/Question Sets</h3>
         <p>Interactive practice papers and model questions for Class 10 SEE preparation.</p>
         <span class="res-lnk">View Practice Question Sets →</span>
+      </a>
+      <a href="resources.html" class="res-card rv">
+        <div class="res-ico">📖</div>
+        <h3>Study Notes</h3>
+        <p>Detailed unit-wise science notes for Classes 8, 9, and 10 in both mediums.</p>
+        <span class="res-lnk">View Study Notes →</span>
       </a>
       <a href="resources.html?cat=solutions" class="res-card rv">
         <div class="res-ico">📂</div>
@@ -2283,6 +2330,7 @@
     </a>
     <nav class="fnav">
       <a href="#home">Home</a>
+      <a href="notes.html">Notes</a>
       <a href="resources.html">Resources</a>
       <a href="links.html">Links</a>
       <a href="tools.html">Tools</a>

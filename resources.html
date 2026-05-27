@@ -9,20 +9,26 @@
   <title>Resources — Yamnath Poudel</title>
   <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@100..900&family=Mukta:wght@400;600;700;800&display=swap"
     rel="stylesheet" />
   <style>
     :root {
-      --ink: #0a0f1e;
+      --ink: #030712;
       --navy: #0d1b3e;
       --navy2: #122050;
-      --gold: #c8a84b;
-      --gold2: #e2c46a;
+      --gold: #d4af37;
+      --gold2: #f4d03f;
       --cream: #f7f2ea;
       --cream2: #efe8d8;
       --slate: #4a5568;
       --mist: #8896a5;
       --ease: cubic-bezier(.22, 1, .36, 1);
+      --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --text-dim: rgba(255, 255, 255, 0.5);
+      --font-serif: 'Cormorant Garamond', serif;
+      --font-heading: 'Mukta', sans-serif;
     }
 
     *,
@@ -39,7 +45,7 @@
     }
 
     body {
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Outfit', 'Mukta', sans-serif;
       background: var(--ink);
       color: #fff;
       overflow-x: hidden;
@@ -194,15 +200,28 @@
     #mob {
       position: fixed;
       inset: 0;
-      background: var(--ink);
-      z-index: 999;
+      background: rgba(10, 15, 30, 0.98);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 2000;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 1.8rem;
       transform: translateX(100%);
-      transition: transform .42s var(--ease);
+      transition: transform .4s var(--ease);
+    }
+
+    #mob::before {
+      content: '';
+      position: absolute;
+      top: -10%;
+      right: -10%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(200, 168, 75, 0.08) 0%, transparent 70%);
+      pointer-events: none;
     }
 
     #mob.open {
@@ -211,15 +230,16 @@
 
     #mob a {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 700;
       color: rgba(255, 255, 255, .7);
-      transition: color .2s;
+      transition: all .3s;
       text-decoration: none;
     }
 
     #mob a:hover {
       color: var(--gold);
+      transform: scale(1.05);
     }
 
     @media (max-width: 900px) {
@@ -266,7 +286,7 @@
       padding: 1rem 1.5rem;
       border-radius: 12px;
       color: #fff;
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Outfit', 'Mukta', sans-serif;
       font-size: 1rem;
       outline: none;
       transition: border-color 0.3s, box-shadow 0.3s;
@@ -381,7 +401,7 @@
     }
 
     .file-info h3 {
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Outfit', 'Mukta', sans-serif;
       font-size: 1.15rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
@@ -476,7 +496,7 @@
 
     .fbrand small {
       display: block;
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Outfit', 'Mukta', sans-serif;
       font-size: .62rem;
       color: rgba(255, 255, 255, .24);
       font-weight: 400;
@@ -531,6 +551,165 @@
         font-size: 0.75rem;
       }
     }
+    /* ══ READER VIEW ══ */
+    #reader-view {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--ink);
+      z-index: 3000;
+      overflow-y: auto;
+      padding: 2rem clamp(1.5rem, 5vw, 5rem);
+      animation: slideUp 0.5s var(--ease-premium);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 2rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .back-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--gold); }
+
+    /* ══ BENTO CARDS ══ */
+    .section-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+
+    .section-header .line {
+      height: 1px;
+      flex: 1;
+      background: linear-gradient(to right, var(--glass-border), transparent);
+    }
+
+    /* Unit Card styles */
+    .unit-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 2rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s var(--ease-premium);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .unit-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateY(-8px);
+      border-color: var(--gold);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    }
+
+    .unit-card .u-num {
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--gold);
+      opacity: 0.1;
+      position: absolute;
+      top: 5px;
+      right: 15px;
+    }
+    
+    .medium-toggle {
+      display: none;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 2rem;
+    }
+    /* ══ LEGACY READER STYLES ══ */
+    .hero-note { margin-bottom: 3rem; }
+    .intro-card {
+      background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 20px;
+      border: 1px solid var(--glass-border); font-size: 1.05rem; color: #fff;
+      font-style: italic; position: relative; margin-top: 1rem;
+    }
+    .section-header { margin: 4rem 0 2rem; display: flex; align-items: baseline; gap: 15px; }
+    .section-header h2 { font-family: var(--font-serif); font-size: 2.2rem; color: var(--gold); }
+    .section-header .line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--glass-border), transparent); }
+    
+    .mcq-container { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .mcq-card {
+      background: rgba(255,255,255,0.01); border: 1px solid var(--glass-border);
+      padding: 2rem; border-radius: 20px; position: relative; transition: 0.3s;
+    }
+    .mcq-num { position: absolute; top: 1rem; right: 1.5rem; font-size: 2.5rem; font-weight: 900; opacity: 0.05; color: var(--gold); }
+    .mcq-question { font-size: 1.15rem; font-weight: 600; margin-bottom: 1.5rem; display: block; color: #fff; }
+    .mcq-options {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.7rem;
+    }
+    @media (max-width: 768px) {
+      .mcq-options {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .option-btn {
+      background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border);
+      padding: 1rem 1.2rem; border-radius: 12px; color: #fff; cursor: pointer;
+      text-align: left; font-size: 0.95rem; transition: 0.2s; display: flex; align-items: center;
+    }
+    .option-btn:hover { background: rgba(255, 255, 255, 0.07); }
+    .option-btn.correct { background: rgba(34, 197, 94, 0.1) !important; border-color: #22c55e !important; color: #4ade80 !important; }
+    .option-btn.wrong { background: rgba(239, 68, 68, 0.1) !important; border-color: #ef4444 !important; color: #f87171 !important; }
+
+    .qa-card {
+      background: rgba(255,255,255,0.01); border-left: 3px solid var(--gold);
+      padding: 1.5rem; border-radius: 0 15px 15px 0; margin-bottom: 1.2rem; border: 1px solid var(--glass-border);
+      border-left-width: 4px;
+    }
+    .qa-q { font-weight: 700; color: #fff; margin-bottom: 0.6rem; font-size: 1.1rem; }
+    .qa-a { color: rgba(255,255,255,0.7); line-height: 1.6; }
+    .qa-a.gold { color: var(--gold2); }
+
+    .diff-table-wrapper { background: rgba(255,255,255,0.01); border: 1px solid var(--glass-border); border-radius: 15px; overflow: hidden; margin-top: 1rem; }
+    .diff-table { width: 100%; border-collapse: collapse; }
+    .diff-table th { background: rgba(212, 175, 55, 0.08); color: var(--gold); padding: 1.2rem; text-align: left; font-size: 0.85rem; text-transform: uppercase; border: 1px solid var(--glass-border); }
+    .diff-table td { padding: 1.2rem; border: 1px solid var(--glass-border); font-size: 0.95rem; color: rgba(255,255,255,0.8); }
+
+    .practice-box {
+      background: linear-gradient(135deg, rgba(200, 168, 75, 0.05), transparent);
+      border: 1px dashed var(--gold); padding: 2rem; border-radius: 20px;
+    }
   </style>
 </head>
 
@@ -539,7 +718,8 @@
   <!-- Mobile overlay -->
   <div id="mob">
     <a href="index.html#home" onclick="closeMob()">Home</a>
-    <a href="resources.html" onclick="closeMob()">Resources</a>
+    <a href="notes.html" onclick="closeMob()">Notes</a>
+    <a href="resources.html" onclick="closeMob()" style="color:var(--gold)">Resources</a>
     <a href="links.html" onclick="closeMob()">Links</a>
     <a href="tools.html" onclick="closeMob()">Tools</a>
     <a href="labs.html" onclick="closeMob()">Virtual Labs</a>
@@ -554,6 +734,7 @@
     </a>
     <ul class="nav-links">
       <li><a href="index.html#home">Home</a></li>
+      <li><a href="notes.html">Notes</a></li>
       <li><a href="resources.html" style="color:var(--gold)">Resources</a></li>
       <li><a href="links.html">Links</a></li>
       <li><a href="tools.html">Tools</a></li>
@@ -590,20 +771,21 @@
       <div class="filter-group">
         <span class="filter-label">Resource Type</span>
         <div class="filters" id="typeFilters">
-          <button class="filter-btn active" data-type="all" onclick="setTypeFilter('all')">All Types</button>
+          <button class="filter-btn active" data-type="all" onclick="setTypeFilter('all')">All Resources</button>
           <button class="filter-btn" data-type="practise_questions_sets"
             onclick="setTypeFilter('practise_questions_sets')">Practice / Question Sets</button>
-          <button class="filter-btn" data-type="notes"
-            onclick="setTypeFilter('notes')">Notes</button>
           <button class="filter-btn" data-type="solutions" onclick="setTypeFilter('solutions')">Solutions</button>
-          <button class="filter-btn" data-type="teachers_guide" onclick="setTypeFilter('teachers_guide')">Teachers
-            guide</button>
+          <button class="filter-btn" data-type="teachers_guide" onclick="setTypeFilter('teachers_guide')">Teachers guide</button>
           <button class="filter-btn" data-type="videos" onclick="setTypeFilter('videos')">Videos</button>
           <button class="filter-btn" data-type="curriculum" onclick="setTypeFilter('curriculum')">Curriculum</button>
           <button class="filter-btn" data-type="textbook" onclick="setTypeFilter('textbook')">Textbooks</button>
           <button class="filter-btn" data-type="misc" onclick="setTypeFilter('misc')">Misc</button>
           <button class="filter-btn" data-type="notice" onclick="setTypeFilter('notice')">Notices</button>
         </div>
+
+      <div class="medium-toggle" id="mediumToggle">
+        <button class="filter-btn active" onclick="setMedium('np', this)">Nepali Medium</button>
+        <button class="filter-btn" onclick="setMedium('en', this)">English Medium</button>
       </div>
     </section>
 
@@ -612,6 +794,14 @@
       <div class="empty-state" id="emptyState">
         No resources found matching your search or category.
       </div>
+    </div>
+
+    <!-- READER VIEW -->
+    <div id="reader-view">
+      <div class="back-btn" onclick="closeReader()">
+        <span>←</span> Back to Resource Library
+      </div>
+      <div id="reader-content"></div>
     </div>
   </main>
 
@@ -623,6 +813,7 @@
     </a>
     <nav class="fnav">
       <a href="index.html#home">Home</a>
+      <a href="notes.html">Notes</a>
       <a href="resources.html" style="color:var(--gold)">Resources</a>
       <a href="links.html">Links</a>
       <a href="tools.html">Tools</a>
@@ -631,6 +822,14 @@
     </nav>
     <div class="fcopy">© 2026 Keshav Poudel. All rights reserved.</div>
   </footer>
+
+  <!-- DATA SCRIPTS -->
+  <script src="js/notes-10-np.js"></script>
+  <script src="js/notes-10-en.js"></script>
+  <script src="js/notes-9-np.js"></script>
+  <script src="js/notes-9-en.js"></script>
+  <script src="js/notes-8-np.js"></script>
+  <script src="js/notes-8-en.js"></script>
 
   <script>
     /* mobile menu */
@@ -676,10 +875,8 @@
     const resources = [
       // Questions
      // { title: "notes", description: "notes", category: "notes", class: "10", path: "documents/notes/notes.pdf", icon: "📄", size: "0.5 MB" },
-     
-     { title: "कक्षा ११ को पठनपाठन सम्वन्धमा", description: "कक्षा ११ को पठनपाठन असार १ गतेदेखि सुचारु गर्न केन्द्रको निर्देशन", category: "notice", class: "General", path: "notice/कक्षा_११_को_पठनपाठन_सम्वन्धमा.pdf", icon: "🔔", size: "0.5 MB" },
 
-     
+
       { title: "विद्यालय तहमा पठनपाठन सञ्चालन तथा व्यवस्थापन सम्वन्धमा", description: "शनिवार र आइतवार सार्वजनिक विदा भएको सन्दर्भमा विद्यालय तहमा पठनपाठन सञ्चालनbतथा व्यवस्थापन सम्वन्धमा", category: "notice", class: "General", path: "notice/शनिवार_र_आइतवार_सार्वजनिक_विदा_भएको_सन्दर्भमा_विद्यालय_तहमा_पठनपाठन_सञ्चालन_तथा_व्यवस्थापन_सम्वन्धमा.pdf", icon: "🔔", size: "0.5 MB" },
       
       { title: "नेपाल सरकारको नीति तथा कार्यक्रम 2083-01-28", description: "नेपाल सरकारको नीति तथा कार्यक्रम 2083-01-28", category: "notice", class: "General", path: "notice/फाइनल_नीति_तथा_कार्यक्रम_20830128.pdf", icon: "🔔", size: "0.5 MB" },
@@ -824,52 +1021,12 @@
 
 
     let currentType = 'all';
-    let currentClass = 'all';
-
-    function renderResources() {
-      const grid = document.getElementById('resourceGrid');
-      const emptyState = document.getElementById('emptyState');
-      const search = document.getElementById('searchInput').value.toLowerCase();
-
-      // Clear current grid except empty state
-      const cards = grid.querySelectorAll('.file-card');
-      cards.forEach(c => c.remove());
-
-      const filtered = resources.filter(res => {
-        const matchesType = currentType === 'all' || res.category === currentType;
-        const matchesClass = currentClass === 'all' || res.class === currentClass;
-        const matchesSearch = res.title.toLowerCase().includes(search) || res.description.toLowerCase().includes(search);
-        return matchesType && matchesClass && matchesSearch;
-      });
-
-      if (filtered.length === 0) {
-        emptyState.style.display = 'block';
-      } else {
-        emptyState.style.display = 'none';
-        filtered.forEach(res => {
-          const card = document.createElement('a');
-          card.className = 'file-card rv vis';
-          card.href = res.path;
-          card.target = "_blank";
-          card.innerHTML = `
-            <span class="file-class">${res.class}</span>
-            <div class="file-icon">${res.icon}</div>
-            <div class="file-info">
-              <h3>${res.title}</h3>
-              <p>${res.description}</p>
-            </div>
-            <div class="file-meta">
-              <span class="file-type">${res.category}</span>
-              <span class="file-size">${res.size}</span>
-            </div>
-          `;
-          grid.appendChild(card);
-        });
-      }
-    }
+    let currentClass = '10';
+    let currentMedium = 'np';
 
     function setTypeFilter(category) {
       currentType = category;
+      document.getElementById('mediumToggle').style.display = (category === 'notes') ? 'flex' : 'none';
       updateFilterButtons('typeFilters', category);
       renderResources();
     }
@@ -880,35 +1037,309 @@
       renderResources();
     }
 
+    function setMedium(med, btn) {
+      currentMedium = med;
+      btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderResources();
+    }
+
+    function renderResources() {
+      const grid = document.getElementById('resourceGrid');
+      const emptyState = document.getElementById('emptyState');
+      const search = document.getElementById('searchInput').value.toLowerCase();
+
+      // Clear grid
+      grid.innerHTML = "";
+      grid.appendChild(emptyState);
+      emptyState.style.display = 'none';
+
+      // 1. IF 'Notes' is selected
+      if (currentType === 'notes') {
+        renderNotesGrid(grid, search);
+      }
+
+      // 2. IF 'All' or a specific static type is selected
+      if (currentType !== 'notes') {
+        // Define priority for categories in 'All' view
+        const priority = {
+          'practise_questions_sets': 1,
+          'solutions': 2,
+          'textbook': 3,
+          'curriculum': 4,
+          'teachers_guide': 5,
+          'videos': 6,
+          'notice': 7,
+          'misc': 8
+        };
+
+        const filtered = resources.filter(res => {
+          const matchesType = currentType === 'all' || res.category === currentType;
+          const matchesClass = currentClass === 'all' || res.class === currentClass;
+          const matchesSearch = res.title.toLowerCase().includes(search) || res.description.toLowerCase().includes(search);
+          return matchesType && matchesClass && matchesSearch;
+        }).sort((a, b) => (priority[a.category] || 99) - (priority[b.category] || 99));
+
+        if (filtered.length === 0 && currentType !== 'all') {
+          // If in 'All' view, we might have notes even if filtered files are 0
+          if (grid.querySelectorAll('.unit-card').length === 0) {
+            emptyState.style.display = 'block';
+          }
+        } else {
+          filtered.forEach(res => {
+            const card = document.createElement('a');
+            card.className = 'file-card';
+            card.href = res.path;
+            card.target = "_blank";
+            card.innerHTML = `
+              <span class="file-class">${res.class}</span>
+              <div class="file-icon">${res.icon}</div>
+              <div class="file-info">
+                <h3>${res.title}</h3>
+                <p>${res.description}</p>
+              </div>
+              <div class="file-meta">
+                <span class="file-type">${res.category.replace(/_/g, ' ')}</span>
+                <span class="file-size">${res.size}</span>
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+        }
+      }
+    }
+
+    function renderNotesGrid(grid, search) {
+      const actualClass = currentClass === 'all' ? '10' : currentClass;
+      const dataKey = `notesData${actualClass}${currentMedium.toUpperCase()}`;
+      const data = window[dataKey];
+      
+      let found = 0;
+      for (let i = 1; i <= 20; i++) {
+        const unit = data?.[i];
+        if (unit && (unit.title.toLowerCase().includes(search) || unit.intro.toLowerCase().includes(search))) {
+          found++;
+          const card = document.createElement('a');
+          card.className = 'file-card';
+          card.href = 'javascript:void(0)';
+          card.onclick = () => loadNote(actualClass, currentMedium, i);
+          card.innerHTML = `
+            <span class="file-class">${actualClass}</span>
+            <div class="file-icon">📖</div>
+            <div class="file-info">
+              <div style="font-size:0.65rem; color:var(--gold); font-weight:800; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:4px;">Unit ${i}</div>
+              <h3>${unit.title}</h3>
+              <p>${unit.intro.substring(0, 80)}...</p>
+            </div>
+            <div class="file-meta">
+              <span class="file-type">Study Notes</span>
+              <span class="file-size">Interactive</span>
+            </div>
+          `;
+          grid.appendChild(card);
+        }
+      }
+
+      if (found === 0) {
+        document.getElementById('emptyState').style.display = 'block';
+        document.getElementById('emptyState').innerHTML = `<h3>Notes coming soon for Class ${actualClass}.</h3>`;
+      }
+    }
+
+    function loadNote(cls, med, unitNum) {
+      const dataKey = `notesData${cls}${med.toUpperCase()}`;
+      const data = window[dataKey]?.[unitNum];
+      if (!data) return;
+
+      const reader = document.getElementById('reader-view');
+      const content = document.getElementById('reader-content');
+      
+      reader.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+
+      // Function to bold the part before colon
+      const formatSummary = (text) => {
+        if (text.includes(':')) {
+          const parts = text.split(':');
+          return `<b>${parts[0]}:</b>${parts.slice(1).join(':')}`;
+        }
+        return text;
+      };
+
+      let html = `
+        <!-- Hero / Title -->
+        <div class="hero-note" data-reveal>
+          <h1 style="font-family:'Cormorant Garamond', serif; font-size:clamp(2.5rem, 5vw, 4rem); color:#fff; margin-bottom:1rem;">${data.title}</h1>
+          <div class="intro-card">${data.intro}</div>
+        </div>
+
+        <!-- 1. Quick Summary -->
+        ${data.summary ? `
+          <div class="section-card" data-reveal>
+            <div class="section-header"><h2>Quick Summary</h2><div class="line"></div></div>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              ${data.summary.map(s => `
+                <p style="line-height: 1.7; font-size: 1.05rem; margin: 0;">
+                  ${formatSummary(s)}
+                </p>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- 2. Interactive Quiz -->
+        ${data.mcqs ? `
+          <div class="section-card" data-reveal>
+            <div class="section-header"><h2>Interactive Quiz</h2><div class="line"></div></div>
+            <div class="mcq-container">
+              ${data.mcqs.map((m, idx) => `
+                <div class="mcq-card">
+                  <div class="mcq-num">${idx+1}</div>
+                  <span class="mcq-question">${m.q}</span>
+                  <div class="mcq-options">
+                    ${m.options.map((opt, oIdx) => `
+                      <button class="option-btn" onclick="checkAnswer(this, ${oIdx}, ${m.a})">
+                        <span style="color:var(--gold); font-weight:800; margin-right:12px;">(${(['i','ii','iii','iv'])[oIdx]})</span> 
+                        ${opt}
+                      </button>
+                    `).join('')}
+                  </div>
+                  ${m.hint ? `<div style="margin-top:1rem; font-size:0.8rem; color:rgba(255,255,255,0.3); font-style:italic;">Hint: ${m.hint}</div>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- 3. Very Short Q&A -->
+        ${data.vshort ? `
+          <div class="section-card" data-reveal>
+            <div class="section-header"><h2>Very Short Questions</h2><div class="line"></div></div>
+            ${data.vshort.map(v => `
+              <div class="qa-card">
+                <p class="qa-q">Q: ${v.q}</p>
+                <p class="qa-a gold">A: ${v.a}</p>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+
+        <!-- 4. Short Q&A -->
+        ${data.short ? `
+          <div class="section-card" data-reveal>
+            <div class="section-header"><h2>Short Questions</h2><div class="line"></div></div>
+            ${data.short.map(s => `
+              <div class="qa-card">
+                <p class="qa-q">Q: ${s.q}</p>
+                <p class="qa-a">A: ${s.a}</p>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+
+        <!-- 5. Differences -->
+        ${data.differences ? `
+          <div class="section-card" data-reveal>
+            <div class="section-header"><h2>Key Differences</h2><div class="line"></div></div>
+            ${data.differences.map(diff => `
+              <div style="margin-bottom:2.5rem;">
+                <h3 style="color:var(--gold); margin-bottom:1.2rem; font-size:1.2rem;">${diff.title}</h3>
+                <div class="diff-table-wrapper">
+                  <table class="diff-table">
+                    <thead>
+                      <tr>${diff.headers.map(h => `<th>${h}</th>`).join('')}</tr>
+                    </thead>
+                    <tbody>
+                      ${diff.rows.map(row => `
+                        <tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>
+                      `).join('')}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+
+        <!-- 6. Give Reasons -->
+        ${data.reasons ? `
+          <div class="section-card" data-reveal>
+            <div class="section-header"><h2>Give Reasons</h2><div class="line"></div></div>
+            ${data.reasons.map(r => `
+              <div class="qa-card" style="border-left-color: var(--gold2);">
+                <p class="qa-q">Q: ${r.q}</p>
+                <p class="qa-a" style="font-style:italic;">Reason: ${r.a}</p>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+
+        <!-- 7. Long Questions -->
+        ${data.long ? `
+          <div class="section-card" data-reveal>
+            <div class="section-header"><h2>Long Questions</h2><div class="line"></div></div>
+            ${data.long.map(l => `
+              <div class="qa-card" style="border-left-width: 6px;">
+                <p class="qa-q" style="font-size:1.2rem;">Q: ${l.q}</p>
+                <p class="qa-a" style="font-size:1.05rem;">A: ${l.a}</p>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+
+        <!-- 8. Practice Corner -->
+        ${data.practice ? `
+          <div class="section-card" data-reveal>
+            <div class="section-header"><h2>Practice Corner</h2><div class="line"></div></div>
+            <div class="practice-box">
+              ${data.practice.mcqs ? `
+                <div style="margin-bottom:1.5rem;">
+                  <strong style="color:var(--gold); display:block; margin-bottom:10px;">MCQs to Practice:</strong>
+                  <ul style="list-style:none;">
+                    ${data.practice.mcqs.map(pq => `<li style="margin-bottom:8px; padding-left:1rem; position:relative; color:rgba(255,255,255,0.7);"><span style="position:absolute; left:0; color:var(--gold);">•</span> ${pq}</li>`).join('')}
+                  </ul>
+                </div>
+              ` : ''}
+              ${data.practice.vshort ? `<div style="margin-bottom:1rem;"><strong style="color:var(--gold);">Very Short:</strong> ${data.practice.vshort.join(', ')}</div>` : ''}
+              ${data.practice.short ? `<div><strong style="color:var(--gold);">Short & Long:</strong> ${data.practice.short.join(', ')}</div>` : ''}
+            </div>
+          </div>
+        ` : ''}
+      `;
+      content.innerHTML = html;
+      initReveal();
+    }
+
+    function closeReader() {
+      document.getElementById('reader-view').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    function checkAnswer(btn, selected, correct) {
+      if (btn.parentElement.querySelector('.active')) return;
+      const opts = btn.parentElement.querySelectorAll('.filter-btn');
+      opts[correct].style.background = 'rgba(72, 187, 120, 0.2)';
+      opts[correct].style.borderColor = '#48bb78';
+      if (selected !== correct) {
+        btn.style.background = 'rgba(245, 101, 101, 0.2)';
+        btn.style.borderColor = '#f56565';
+      }
+    }
+
     function updateFilterButtons(groupId, activeVal) {
       const container = document.getElementById(groupId);
-      const btns = container.querySelectorAll('.filter-btn');
-      btns.forEach(b => {
+      if (!container) return;
+      container.querySelectorAll('.filter-btn').forEach(b => {
         const val = groupId === 'typeFilters' ? b.dataset.type : b.dataset.class;
         b.classList.toggle('active', val === activeVal);
       });
     }
 
-    function filterItems() {
-      renderResources();
-    }
+    function filterItems() { renderResources(); }
 
-    // Initial Render
     window.onload = () => {
-      /* Clean URLs (Hides .html from address bar on servers) */
-      if (window.location.protocol !== 'file:' && window.location.pathname.endsWith('.html')) {
-        const cleanUrl = window.location.pathname.replace(/\.html$/, '').replace(/\/index$/, '/');
-        window.history.replaceState(null, '', cleanUrl + window.location.search);
-      }
-
-      const urlParams = new URLSearchParams(window.location.search);
-      const type = urlParams.get('type') || urlParams.get('cat');
-      const cls = urlParams.get('class');
-
-      if (type) setTypeFilter(type);
-      if (cls) setClassFilter(cls);
-
-      if (!type && !cls) renderResources();
+      setTypeFilter('all');
+      setClassFilter('10');
     };
   </script>
 </body>

@@ -1,0 +1,2 @@
+var notesData8EN = {
+};

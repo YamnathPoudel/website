@@ -208,15 +208,28 @@
     #mob {
       position: fixed;
       inset: 0;
-      background: var(--ink);
-      z-index: 999;
+      background: rgba(10, 15, 30, 0.98);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 2000;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 1.8rem;
       transform: translateX(100%);
-      transition: transform .42s var(--ease);
+      transition: transform .4s var(--ease);
+    }
+
+    #mob::before {
+      content: '';
+      position: absolute;
+      top: -10%;
+      right: -10%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(200, 168, 75, 0.08) 0%, transparent 70%);
+      pointer-events: none;
     }
 
     #mob.open {
@@ -225,15 +238,16 @@
 
     #mob a {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 700;
       color: rgba(255, 255, 255, .7);
-      transition: color .2s;
+      transition: all .3s;
       text-decoration: none;
     }
 
     #mob a:hover {
       color: var(--gold);
+      transform: scale(1.05);
     }
 
     @media (max-width: 900px) {
@@ -552,6 +566,7 @@
   <!-- Mobile overlay -->
   <div id="mob">
     <a href="index.html#home" onclick="closeMob()">Home</a>
+    <a href="notes.html" onclick="closeMob()">Notes</a>
     <a href="resources.html" onclick="closeMob()">Resources</a>
     <a href="links.html" onclick="closeMob()">Links</a>
     <a href="tools.html" onclick="closeMob()">Tools</a>
@@ -567,6 +582,7 @@
     </a>
     <ul class="nav-links">
       <li><a href="index.html#home">Home</a></li>
+      <li><a href="notes.html">Notes</a></li>
       <li><a href="resources.html">Resources</a></li>
       <li><a href="links.html">Links</a></li>
       <li><a href="tools.html">Tools</a></li>
@@ -635,6 +651,7 @@
     </a>
     <nav class="fnav">
       <a href="index.html#home">Home</a>
+      <a href="notes.html">Notes</a>
       <a href="resources.html">Resources</a>
       <a href="links.html">Links</a>
       <a href="tools.html">Tools</a>
