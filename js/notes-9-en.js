@@ -1,6 +1,6 @@
 var notesData9EN = {
   "1": {
-    title: "Science and Scientific Study: Detailed Study Guide",
+    title: "Scientific Study",
     intro: "Scientific study constitutes the systematic architecture through which humanity constructs, organizes, and verifies knowledge of the natural world. This lesson, 'Science and Scientific Study,' provides a rigorous exploration of the methodologies that underpin modern research and technological advancement.",
     summary: [
       "Detailed Explanation: The acquisition of human knowledge relies upon a structured, evidence-based methodology. By employing a consistent and rigorous approach to inquiry, the scientific community ensures that discoveries are repeatable and verifiable, providing a stable foundation for global technological progress and medical breakthroughs.",
@@ -222,7 +222,7 @@ var notesData9EN = {
     }
   },
   "2": {
-    title: "Classification of Living Beings: Detailed Study Guide",
+    title: "Classification of Living Beings",
     intro: "In the field of biology, systematic study of millions of species of living beings on Earth is a challenging and indispensable task. Organizing the immense diversity of living beings into specific groups based on their body structure, habitat, and biological processes is the cornerstone of scientific research. This study guide highlights the basic principles of taxonomy, historical development, and the strategic importance of the modern Five Kingdom classification system.",
     summary: [
       "Detailed Explanation: In the field of biology, systematic study of millions of species of living beings on Earth is a challenging and indispensable task. Organizing the immense diversity of living beings into specific groups based on their body structure, habitat, and biological processes is the cornerstone of scientific research. This study guide highlights the basic principles of taxonomy, historical development, and the strategic importance of the modern Five Kingdom classification system.",
@@ -452,7 +452,7 @@ var notesData9EN = {
     }
   },
   "3": {
-    title: "Biology and Cultivation of Mushrooms: Detailed Study Guide",
+    title: "Mushrooms",
     intro: "Mushroom is a type of fungus (Fungus) that grows naturally in damp environments, soil mounds, dung, and old bark of trees, especially during the rainy season. Since it lacks chlorophyll, it cannot make its own food through the process of photosynthesis. Therefore, it depends on dead and decaying organic matter. In the ecosystem, mushrooms act as decomposers (Decomposer) and play an important role in mixing organic matter into the soil to increase fertility. Due to its high nutritional value, medicinal properties, and economic value, both its scientific study and commercial cultivation are indispensable.",
     summary: [
       "Detailed Explanation: This section provides a deep analysis of the biological structure, microscopic reproduction process, and commercial cultivation technology of mushrooms. This section will guide you to understand the changes in the life cycle of mushrooms and their economic aspects.",
@@ -666,7 +666,7 @@ var notesData9EN = {
     }
   },
   "4": {
-    title: "Evolution: Detailed Study Guide",
+    title: "Evolution",
     intro: "Evolution stands as the strategic cornerstone of modern biological sciences, providing a unified framework for understanding the immense diversity of life on Earth. By tracing the biological transition from simple microscopic organisms to complex multicellular beings, we gain insight into the dynamic nature of life and its relentless adaptation to a shifting environment. This progression illustrates that life is not static but a continuous process of structural refinement and diversification driven by environmental pressures and genetic inheritance. This guide explores the mechanisms that drive these biological transformations, ensuring a robust foundation for academic and professional scientific inquiry.",
     summary: [
       "Detailed Explanation: A granular understanding of evolutionary mechanics and evidence is essential for scientific literacy in the modern era. It allows professionals and students alike to move beyond superficial observations and comprehend the intricate, evidence-based history of biological development that informs modern medicine, genetics, and ecology.",
